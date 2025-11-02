@@ -1,0 +1,55 @@
+using System.Text.RegularExpressions;
+
+namespace DirectoryService.Domain;
+
+public class Department
+{
+    private Department()
+    {
+        
+    }
+    
+    private Department(string name, string identifier, string path)
+    {
+        if (name == null || 3 > name.Length || name.Length <150)
+        {
+            throw new Exception("Wrong name");
+        }
+        Name = name;
+
+        if (name == null || 3 > name.Length || name.Length <150 || !Regex.IsMatch(identifier, @"^[a-zA-Z0-9]*$"))
+        {
+            throw new Exception("Wrong identifier");
+        }
+        Identifier = identifier;
+        
+        Path = path;
+    }
+    
+    public Guid Id { get; private set; }
+    
+    public string Name { get; private set; }
+    
+    public string Identifier { get; private set; }
+    
+    public Guid ParentId { get; private set; }
+    
+    public string Path { get; private set; }
+    
+    public short Depth { get; private set; }
+    
+    public bool IsActive { get; private set; } = true;
+    
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+    
+    public DateTime Updated { get; private set; } = DateTime.UtcNow;
+
+    public Department? Parent { get; private set; }
+    
+    public List<Department>? Children { get; private set; }
+    
+    public List<Guid>? PositionsId { get; private set; }
+    
+    public List<Guid> LocationId { get; private set; }
+
+}
