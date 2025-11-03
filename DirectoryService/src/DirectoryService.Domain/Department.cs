@@ -46,10 +46,17 @@ public class Department
 
     public Department? Parent { get; private set; }
     
-    public List<Department>? Children { get; private set; }
+    public List<Department> Children { get; private set; }
     
     public List<Guid>? PositionsId { get; private set; }
     
-    public List<Guid> LocationId { get; private set; }
+    public List<Location> LocationId { get; private set; }
+    
+    /// <summary>
+    /// Added list of departmentPosition and departmentLocation
+    /// </summary>
+    public List<DepartmentPosition> Positions { get; private set; }
+    
+    public List<DepartmentLocation> Locations { get; private set; }
 
 }

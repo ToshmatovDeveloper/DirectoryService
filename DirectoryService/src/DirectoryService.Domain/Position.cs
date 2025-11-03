@@ -2,11 +2,6 @@ namespace DirectoryService.Domain;
 
 public class Position
 {
-    private Position()
-    {
-        
-    }
-    
     private Position(string name, string description)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 100)
