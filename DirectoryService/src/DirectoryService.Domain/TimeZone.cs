@@ -1,6 +1,6 @@
 namespace DirectoryService.Domain;
 
-public class TimeZone
+public record TimeZone
 {
     public TimeZone(string value)
     {

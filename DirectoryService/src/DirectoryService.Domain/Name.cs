@@ -5,7 +5,7 @@ namespace DirectoryService.Domain;
 /// <summary>
 /// Name value object
 /// </summary>
-public class Name
+public record Name
 {
     private static readonly Regex NameRegex = new Regex(@"^[\p{L}\p{M}\p{N}._-]{3,150}$");
     
@@ -19,9 +19,9 @@ public class Name
         Value = value;
     }
     
-    public String Value { get; }
+    public string Value { get; }
 
-    public static Boolean IsValid(string value)
+    public static bool IsValid(string value)
     {
         return !string.IsNullOrWhiteSpace(value) 
                && value.Length >= 3
@@ -29,7 +29,7 @@ public class Name
                && NameRegex.IsMatch(value);
     }
     
-    public override bool Equals(object? obj)
+    public bool Equal(object? obj)
     {
         return obj is Name other && StringComparer.OrdinalIgnoreCase.Equals(Value, other.Value);
     }

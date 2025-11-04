@@ -1,6 +1,6 @@
 namespace DirectoryService.Domain;
 
-public class Location
+public record Location
 {
     private Location()
     {
@@ -21,9 +21,9 @@ public class Location
     
     public string Name { get; private set; }
     
-    public string? Address { get; private set; }
+    public string Address { get; private set; }
     
-    public string? TimeZone { get; private set; }
+    public string TimeZone { get; private set; }
     
     public bool IsActive { get; private set; }
     
@@ -31,5 +31,5 @@ public class Location
     
     public DateTime UpdatedAt { get; private set; }
     
-    public List<Guid>? DepartmentId { get; private set; } 
+    public List<Department> DepartmentId { get; private set; } 
 }

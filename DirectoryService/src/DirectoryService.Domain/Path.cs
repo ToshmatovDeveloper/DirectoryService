@@ -4,7 +4,7 @@ namespace DirectoryService.Domain;
 /// Path value object
 /// </summary>
 
-public class Path
+public record Path
 {
     public Path(string value)
     {
@@ -17,7 +17,7 @@ public class Path
     
     public string Value { get; }
 
-    public static Boolean IsValid(string value)
+    public static bool IsValid(string value)
     {
         return !string.IsNullOrWhiteSpace(value);
     }

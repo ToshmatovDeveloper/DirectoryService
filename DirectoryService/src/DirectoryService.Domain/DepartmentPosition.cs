@@ -2,10 +2,10 @@ namespace DirectoryService.Domain;
 
 public class DepartmentPosition
 {
-    public Guid DepartmentId { get; set; }
-    public Department Department { get; set; } = null!;
+    public Guid DepartmentId { get; private set; }
+    public Department Department { get; private set; } = null!;
     
-    public Guid PositionId { get; set; }
-    public Position Position { get; set; } = null!;
+    public Guid PositionId { get; private set; }
+    public Position Position { get; private set; } = null!;
 
 }

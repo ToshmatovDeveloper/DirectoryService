@@ -6,7 +6,7 @@ namespace DirectoryService.Domain;
 /// Identifier value object
 /// </summary>
 
-public class Identifier
+public partial record Identifier
 {
     private static readonly Regex IdentifierRegex = new Regex(@"^[a-zA-Z0-9._-]{3,150}$");
     
@@ -20,9 +20,9 @@ public class Identifier
         Value = value;
     }
 
-    public String Value { get; } = null!;
+    public string Value { get; } 
 
-    public static Boolean IsValid(string value)
+    public static bool IsValid(string value)
     {
         return !string.IsNullOrWhiteSpace(value) 
                && value.Length >= 3
@@ -30,7 +30,7 @@ public class Identifier
                && IdentifierRegex.IsMatch(value);
     }
     
-    public override bool Equals(object? obj)
+    public bool Equal(object? obj)
     {
         return obj is Name other && StringComparer.OrdinalIgnoreCase.Equals(Value, other.Value);
     }

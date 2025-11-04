@@ -1,6 +1,6 @@
 namespace DirectoryService.Domain;
 
-public class Position
+public record Position
 {
     private Position(string name, string description)
     {
