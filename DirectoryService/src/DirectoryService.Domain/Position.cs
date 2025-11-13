@@ -1,27 +1,27 @@
+using DirectoryService.Domain.ValueObjects;
+
 namespace DirectoryService.Domain;
 
-public record Position
+public class Position
 {
-    private Position(string name, string description)
+    private Position(Guid id, 
+                     Name name, 
+                     string description, 
+                     bool isActive,
+                     DateTime createdAt,
+                     DateTime updatedAt)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 100)
-        {
-            throw new Exception("Wrong position name");
-        }
-        
-        Name = name;
-
-        if (description.Length >= 1000)
-        {
-            throw new Exception("Position description mast be less than 1000 characters");
-        }
-        
-        Description = description;
+        Id=id;
+        Name=name;
+        Description=description;
+        IsActive=isActive;
+        CreatedAt=createdAt;
+        UpdatedAt=updatedAt;
     }
     
     public Guid Id { get; private set; }
     
-    public string Name { get; private set; }
+    public Name Name { get; private set; }
     
     public string Description { get; private set; }
     
@@ -30,4 +30,6 @@ public record Position
     public DateTime CreatedAt { get; private set; }
     
     public DateTime UpdatedAt { get; private set; }
+
+    public List<DepartmentPosition> Departments { get; private set; }
 }

@@ -1,4 +1,4 @@
-namespace DirectoryService.Domain;
+namespace DirectoryService.Domain.ValueObjects;
 
 public record TimeZone
 {

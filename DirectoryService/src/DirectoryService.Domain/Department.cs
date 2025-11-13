@@ -1,40 +1,59 @@
+using DirectoryService.Domain.ValueObjects;
 using System.Text.RegularExpressions;
+using Path = DirectoryService.Domain.ValueObjects.Path;
 
 namespace DirectoryService.Domain;
 
 public class Department
 {
+    private readonly Guid _id;
+    private readonly Name _name;
+    private readonly Identifier _identifier;
+    private readonly Guid _parentId;
+    private readonly Path _path;
+    private readonly short _depth;
+    private readonly bool _isActive;
+    private readonly DateTime _createdAt;
+    private readonly DateTime _updatedAt;
+    private readonly Department _parent;
+
     private Department()
     {
         
     }
     
-    private Department(string name, string identifier, string path)
+    private Department(Guid id, 
+                       Name name, 
+                       Identifier identifier, 
+                       Guid parentId, 
+                       Path path,
+                       short depth,
+                       bool isActive,
+                       DateTime createdAt,
+                       DateTime updatedAt,
+                       Department parent)
     {
-        if (name == null || 3 > name.Length || name.Length <150)
-        {
-            throw new Exception("Wrong name");
-        }
+        Id = id;
         Name = name;
-
-        if (name == null || 3 > name.Length || name.Length <150 || !Regex.IsMatch(identifier, @"^[a-zA-Z0-9]*$"))
-        {
-            throw new Exception("Wrong identifier");
-        }
         Identifier = identifier;
-        
+        ParentId = parentId;
         Path = path;
+        Depth = depth;
+        IsActive = isActive;
+        CreatedAt = createdAt;
+        Updated = updatedAt;
+        Parent = parent;
     }
     
     public Guid Id { get; private set; }
     
-    public string Name { get; private set; }
+    public Name Name { get; private set; }
     
-    public string Identifier { get; private set; }
+    public Identifier Identifier { get; private set; }
     
     public Guid ParentId { get; private set; }
     
-    public string Path { get; private set; }
+    public Path Path { get; private set; }
     
     public short Depth { get; private set; }
     

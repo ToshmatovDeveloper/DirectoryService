@@ -1,33 +1,32 @@
 using System.Text.RegularExpressions;
 
-namespace DirectoryService.Domain;
+namespace DirectoryService.Domain.ValueObjects;
 
 /// <summary>
-/// Identifier value object
+/// Name value object
 /// </summary>
-
-public partial record Identifier
+public record Name
 {
-    private static readonly Regex IdentifierRegex = new Regex(@"^[a-zA-Z0-9._-]{3,150}$");
+    private static readonly Regex NameRegex = new Regex(@"^[\p{L}\p{M}\p{N}._-]{3,150}$");
     
-    public Identifier(string value)
+    public Name(string value)
     {
         if (!IsValid(value))
         {
-            throw new ArgumentException("Identifier is not valid");
+            throw new ArgumentException("Name is not valid");
         }
 
         Value = value;
     }
-
-    public string Value { get; } 
+    
+    public string Value { get; }
 
     public static bool IsValid(string value)
     {
         return !string.IsNullOrWhiteSpace(value) 
                && value.Length >= 3
                && value.Length <= 150
-               && IdentifierRegex.IsMatch(value);
+               && NameRegex.IsMatch(value);
     }
     
     public bool Equal(object? obj)

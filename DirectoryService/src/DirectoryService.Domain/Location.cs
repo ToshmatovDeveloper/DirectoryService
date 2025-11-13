@@ -1,29 +1,39 @@
+using DirectoryService.Domain.ValueObjects;
+using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
+
 namespace DirectoryService.Domain;
 
-public record Location
+public class Location
 {
     private Location()
     {
         
     }
 
-    private Location(string name)
+    private Location(Guid id, 
+                     Name name, 
+                     Address address,
+                     TimeZone timeZone,
+                     bool isActive,
+                     DateTime createdAt,
+                     DateTime updatedAt)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 120)
-        {
-            throw new Exception("Wrong position name");
-        }
-        
+        Id = id;
         Name = name;
+        Address = address;
+        TimeZone = timeZone;
+        IsActive = isActive;
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
     }
 
     public Guid Id { get; private set; }
     
-    public string Name { get; private set; }
+    public Name Name { get; private set; }
     
-    public string Address { get; private set; }
+    public Address Address { get; private set; }
     
-    public string TimeZone { get; private set; }
+    public TimeZone TimeZone { get; private set; }
     
     public bool IsActive { get; private set; }
     
@@ -31,5 +41,8 @@ public record Location
     
     public DateTime UpdatedAt { get; private set; }
     
-    public List<Department> DepartmentId { get; private set; } 
+    public List<Department> DepartmentId { get; private set; }
+
+    public List<DepartmentLocation> Departments { get; private set; }
+
 }
