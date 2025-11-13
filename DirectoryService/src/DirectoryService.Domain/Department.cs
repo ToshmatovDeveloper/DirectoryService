@@ -9,15 +9,15 @@ public class Department
         
     }
     
-    private Department(string name, string identifier, string path)
+    private Department(Name name, Identifier identifier, Path path)
     {
-        if (name == null || 3 > name.Length || name.Length <150)
+        if (name == null || 3 > name.ToString().Length || name.ToString().Length <150)
         {
             throw new Exception("Wrong name");
         }
         Name = name;
 
-        if (name == null || 3 > name.Length || name.Length <150 || !Regex.IsMatch(identifier, @"^[a-zA-Z0-9]*$"))
+        if (name == null || 3 > name.ToString().Length || name.ToString().Length <150 || !Regex.IsMatch(identifier.ToString(), @"^[a-zA-Z0-9]*$"))
         {
             throw new Exception("Wrong identifier");
         }
@@ -28,13 +28,13 @@ public class Department
     
     public Guid Id { get; private set; }
     
-    public string Name { get; private set; }
+    public Name Name { get; private set; }
     
-    public string Identifier { get; private set; }
+    public Identifier Identifier { get; private set; }
     
     public Guid ParentId { get; private set; }
     
-    public string Path { get; private set; }
+    public Path Path { get; private set; }
     
     public short Depth { get; private set; }
     

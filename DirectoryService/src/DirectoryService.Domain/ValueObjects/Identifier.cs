@@ -6,7 +6,7 @@ namespace DirectoryService.Domain;
 /// Identifier value object
 /// </summary>
 
-public partial record Identifier
+public record Identifier
 {
     private static readonly Regex IdentifierRegex = new Regex(@"^[a-zA-Z0-9._-]{3,150}$");
     
