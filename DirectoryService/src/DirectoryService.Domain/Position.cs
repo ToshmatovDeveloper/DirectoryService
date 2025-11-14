@@ -2,9 +2,13 @@ namespace DirectoryService.Domain;
 
 public record Position
 {
-    private Position(string name, string description)
+    private Position()
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 100)
+        
+    }
+    private Position(Name name, string description)
+    {
+        if (string.IsNullOrWhiteSpace(name.ToString()) || name.ToString().Length < 3 || name.ToString().Length > 100)
         {
             throw new Exception("Wrong position name");
         }
@@ -21,7 +25,7 @@ public record Position
     
     public Guid Id { get; private set; }
     
-    public string Name { get; private set; }
+    public Name Name { get; private set; }
     
     public string Description { get; private set; }
     
@@ -30,4 +34,6 @@ public record Position
     public DateTime CreatedAt { get; private set; }
     
     public DateTime UpdatedAt { get; private set; }
+    
+    public List<DepartmentPosition> Departments { get; private set; }
 }

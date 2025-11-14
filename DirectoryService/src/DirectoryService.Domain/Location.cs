@@ -7,9 +7,9 @@ public record Location
         
     }
 
-    private Location(string name)
+    private Location(Name name)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length < 3 || name.Length > 120)
+        if (string.IsNullOrWhiteSpace(name.ToString()) || name.ToString().Length < 3 || name.ToString().Length > 120)
         {
             throw new Exception("Wrong position name");
         }
@@ -19,11 +19,11 @@ public record Location
 
     public Guid Id { get; private set; }
     
-    public string Name { get; private set; }
+    public Name Name { get; private set; }
     
-    public string Address { get; private set; }
+    public Address Address { get; private set; }
     
-    public string TimeZone { get; private set; }
+    public TimeZone TimeZone { get; private set; }
     
     public bool IsActive { get; private set; }
     
@@ -32,4 +32,7 @@ public record Location
     public DateTime UpdatedAt { get; private set; }
     
     public List<Department> DepartmentId { get; private set; } 
+    
+    public List<DepartmentLocation> Departments { get; private set; }
+
 }
