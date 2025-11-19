@@ -5,7 +5,7 @@ namespace DirectoryService.Domain;
 
 public class Location
 {
-    private Location()
+    public Location()
     {
         
     }
@@ -26,20 +26,20 @@ public class Location
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
+        
+    public Guid Id { get; set; }
+    
+    public Name Name { get; set; }
+    
+    public Address Address { get; set; }
+    
+    public TimeZone TimeZone { get; set; }
 
-    public Guid Id { get; private set; }
+    public bool IsActive { get; private set; } = true;
     
-    public Name Name { get; private set; }
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     
-    public Address Address { get; private set; }
-    
-    public TimeZone TimeZone { get; private set; }
-    
-    public bool IsActive { get; private set; }
-    
-    public DateTime CreatedAt { get; private set; }
-    
-    public DateTime UpdatedAt { get; private set; }
+    public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
     
     public List<Department> DepartmentId { get; private set; }
 

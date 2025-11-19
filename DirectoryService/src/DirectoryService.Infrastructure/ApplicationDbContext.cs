@@ -23,5 +23,7 @@ namespace DirectoryService.Infrastructure
         }
 
         public DbSet<Department> Departments { get; set; }
+        
+        public DbSet<Location> Locations { get; set; }
     }
 }
