@@ -7,51 +7,35 @@ public class CreateLocationValidator : AbstractValidator<CreateLocationDto>
 {
     public CreateLocationValidator()
     {
-        RuleFor(x => x.name)
+        RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("Name is required");
 
-        RuleFor(x => x.address.country)
+        RuleFor(x => x.Address.Country)
             .NotEmpty()
             .WithMessage("Country is required")
             .MaximumLength(100)
             .WithMessage("Country must not exceed 100 characters");
 
-        RuleFor(x => x.address.city)
+        RuleFor(x => x.Address.City)
             .NotEmpty()
             .WithMessage("City is required")
             .MaximumLength(100)
             .WithMessage("City must not exceed 100 characters");
 
-        RuleFor(x => x.address.street)
+        RuleFor(x => x.Address.Street)
             .NotEmpty()
             .WithMessage("Street is required")
             .MaximumLength(100)
             .WithMessage("Street must not exceed 100 characters");
 
-        RuleFor(x => x.timeZone)
+        RuleFor(x => x.TimeZone)
             .NotEmpty()
             .WithMessage("Часовой пояс не может быть пустым!")
             .Must(IsValidTimeZone)
             .WithMessage("Указанный часовой пояс не существует");
     }
-
-    private bool IsValidTimeZone(TimeZone arg)
-    {
-        try
-        {
-            TimeZoneInfo.FindSystemTimeZoneById(arg.ToString());
-            return true;
-        }
-        catch (TimeZoneNotFoundException)
-        {
-            return false;
-        }
-        catch (InvalidTimeZoneException)
-        {
-            return false;
-        }
-    }
+    
 
     private bool IsValidTimeZone(string timeZone)
     {

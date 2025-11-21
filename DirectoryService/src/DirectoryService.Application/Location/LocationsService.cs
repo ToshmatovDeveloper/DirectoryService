@@ -36,9 +36,9 @@ public class LocationsService : ILocationsService
 
         var location = new Location(
             locationId,
-            new Name(locationDto.name),
-            new Address(locationDto.address.country, locationDto.address.city, locationDto.address.street),
-            new TimeZone(locationDto.timeZone));
+            new Name(locationDto.Name),
+            new Address(locationDto.Address.Country, locationDto.Address.City, locationDto.Address.Street),
+            new TimeZone(locationDto.TimeZone));
         
         await _locationRepository.AddAsync(location, cancellationToken);
         
