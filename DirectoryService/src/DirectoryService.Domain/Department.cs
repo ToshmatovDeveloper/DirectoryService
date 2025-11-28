@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using DirectoryService.Domain.ValueObjects;
 
 namespace DirectoryService.Domain;
 
@@ -11,18 +12,8 @@ public class Department
     
     private Department(Name name, Identifier identifier, Path path)
     {
-        if (name == null || 3 > name.ToString().Length || name.ToString().Length <150)
-        {
-            throw new Exception("Wrong name");
-        }
         Name = name;
-
-        if (name == null || 3 > name.ToString().Length || name.ToString().Length <150 || !Regex.IsMatch(identifier.ToString(), @"^[a-zA-Z0-9]*$"))
-        {
-            throw new Exception("Wrong identifier");
-        }
         Identifier = identifier;
-        
         Path = path;
     }
     
