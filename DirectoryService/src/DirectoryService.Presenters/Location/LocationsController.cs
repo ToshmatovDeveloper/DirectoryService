@@ -1,6 +1,8 @@
+using CSharpFunctionalExtensions;
 using DirectoryService.Application;
 using DirectoryService.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 
 namespace DirectoryService.Presentation.Location;
 
@@ -16,7 +18,7 @@ public class LocationsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Guid> Create(CreateLocationDto locationDto,CancellationToken cancellationToken)
+    public async Task<EndpointResult<Guid>> Create(CreateLocationDto locationDto,CancellationToken cancellationToken)
     {
         var locationId = await _locationsService.Create(locationDto,cancellationToken);
         return locationId;

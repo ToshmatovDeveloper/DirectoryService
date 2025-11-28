@@ -1,6 +1,8 @@
 using System.Text.RegularExpressions;
+using CSharpFunctionalExtensions;
+using Shared;
 
-namespace DirectoryService.Domain;
+namespace DirectoryService.Domain.ValueObjects;
 
 /// <summary>
 /// Name value object
@@ -11,22 +13,29 @@ public record Name
     
     public Name(string value)
     {
-        if (!IsValid(value))
-        {
-            throw new ArgumentException("Name is not valid");
-        }
-
         Value = value;
     }
     
     public string Value { get; }
 
-    public static bool IsValid(string value)
+    public static Result<Name, Error> Create(string value)
     {
-        return !string.IsNullOrWhiteSpace(value) 
-               && value.Length >= 3
-               && value.Length <= 150
-               && NameRegex.IsMatch(value);
+        var validate =  Validate(value);
+        
+        if (validate.IsFailure)
+            return GeneralErrors.ValueIsInvalid("Value is invalid");
+
+        return new Name(value);
+    }
+    
+    public static Result<bool,Error> Validate(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length >= 150 
+                                             || value.Length <= 3 
+                                             || !NameRegex.IsMatch(value))
+            return GeneralErrors.ValueIsRequired("Name");
+        
+        return true;
     }
     
     public bool Equal(object? obj)

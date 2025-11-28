@@ -1,3 +1,6 @@
+using DirectoryService.Domain.ValueObjects;
+using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
+
 namespace DirectoryService.Domain;
 
 public record Location

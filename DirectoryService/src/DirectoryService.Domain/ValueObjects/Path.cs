@@ -1,3 +1,6 @@
+using CSharpFunctionalExtensions;
+using Shared;
+
 namespace DirectoryService.Domain;
 
 /// <summary>
@@ -8,17 +11,26 @@ public record Path
 {
     public Path(string value)
     {
-        if (!IsValid(value))
-            throw new ArgumentException("Path is not valid");
-        
         Value = value;
-        
     }
     
     public string Value { get; }
 
-    public static bool IsValid(string value)
+    public static Result<Path, Error> Create(string value)
     {
-        return !string.IsNullOrWhiteSpace(value);
+        var validate =  Validate(value);
+        
+        if (validate.IsFailure)
+            return GeneralErrors.ValueIsInvalid("Value is invalid");
+
+        return new Path(value);
+    }
+    
+    public static Result<bool,Error> Validate(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return GeneralErrors.ValueIsRequired(null);
+      
+        return true;
     }
 }
