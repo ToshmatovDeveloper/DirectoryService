@@ -1,5 +1,7 @@
 using DirectoryService.Application;
 using DirectoryService.Infrastructure;
+using Microsoft.OpenApi.Models;
+using Shared;
 
 namespace DirectoryService;
 
@@ -18,7 +20,6 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddOpenApi();
-        
         return services;
     }
 }

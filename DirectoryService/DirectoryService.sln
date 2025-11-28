@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Web", "src\DirectoryService.Web\DirectoryService.Web.csproj", "{6E03B631-5BCA-4116-888C-8BAB07386AF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{17BB2C3C-A535-40BD-BC6E-68FF53B0B70B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,7 @@ Global
 		{136E8A80-617F-4A00-B7BB-DD606179A079} = {FFAB4EDB-0B1C-4EFD-82EE-70972FB13164}
 		{E98B8626-8AAC-4BC4-9807-ED8D5579628A} = {FFAB4EDB-0B1C-4EFD-82EE-70972FB13164}
 		{6E03B631-5BCA-4116-888C-8BAB07386AF6} = {FFAB4EDB-0B1C-4EFD-82EE-70972FB13164}
+		{17BB2C3C-A535-40BD-BC6E-68FF53B0B70B} = {FFAB4EDB-0B1C-4EFD-82EE-70972FB13164}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{78CBFB60-939C-4E06-AC73-AF66C8CED66C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -52,5 +55,9 @@ Global
 		{6E03B631-5BCA-4116-888C-8BAB07386AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E03B631-5BCA-4116-888C-8BAB07386AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E03B631-5BCA-4116-888C-8BAB07386AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17BB2C3C-A535-40BD-BC6E-68FF53B0B70B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17BB2C3C-A535-40BD-BC6E-68FF53B0B70B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17BB2C3C-A535-40BD-BC6E-68FF53B0B70B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17BB2C3C-A535-40BD-BC6E-68FF53B0B70B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

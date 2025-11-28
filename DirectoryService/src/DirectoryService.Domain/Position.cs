@@ -1,3 +1,5 @@
+using DirectoryService.Domain.ValueObjects;
+
 namespace DirectoryService.Domain;
 
 public record Position
@@ -7,19 +9,8 @@ public record Position
         
     }
     private Position(Name name, string description)
-    {
-        if (string.IsNullOrWhiteSpace(name.ToString()) || name.ToString().Length < 3 || name.ToString().Length > 100)
-        {
-            throw new Exception("Wrong position name");
-        }
-        
+    { 
         Name = name;
-
-        if (description.Length >= 1000)
-        {
-            throw new Exception("Position description mast be less than 1000 characters");
-        }
-        
         Description = description;
     }
     
