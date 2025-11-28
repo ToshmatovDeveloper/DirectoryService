@@ -1,15 +1,15 @@
+using CSharpFunctionalExtensions;
+using Shared;
+
 namespace DirectoryService.Domain;
 
 public record Address
 {
     public Address(string country, string city, string street)
     {
-        if(!IsValid(country,city,street))
-            throw new ArgumentException("Invalid country or city or street");
-        
-        Country = country;
-        City = city;
-        Street = street;
+            Country = country;
+            City = city;
+            Street = street;
     }
     
     public string Country { get; }
@@ -18,23 +18,27 @@ public record Address
     
     public string Street { get; }
 
-    public bool IsValid(string country, string city, string street)
+    public static Result<Address, Error> Create(string country, string city, string street)
     {
-        if (string.IsNullOrWhiteSpace(country))
-            throw new ArgumentNullException("Country is required");
+        var validation = Validate(country, city, street);
         
-        if (string.IsNullOrWhiteSpace(city))
-            throw new ArgumentNullException("City is required");
+        if (validation.IsFailure)
+            return GeneralErrors.ValueIsInvalid("Value is invalid");
         
-        if (string.IsNullOrWhiteSpace(street))
-            throw new ArgumentNullException("Street is required");
+        return new Address(country, city, street);
+    }
+    
+    public static Result<bool,Error> Validate(string country, string city, string street)
+    {
+        if (string.IsNullOrWhiteSpace(country) || country.Length > 100)
+            return GeneralErrors.ValueIsRequired(country);
         
-        if(country.Length > 100) throw new ArgumentOutOfRangeException("Country is too long");
+        if (string.IsNullOrWhiteSpace(city) || city.Length > 100)
+            return GeneralErrors.ValueIsRequired(city);  
         
-        if (city.Length > 100) throw new ArgumentOutOfRangeException("City is too long");
+        if (string.IsNullOrWhiteSpace(street) || street.Length > 100)
+            return GeneralErrors.ValueIsRequired(street);        
         
-        if (street.Length > 100) throw new ArgumentOutOfRangeException("Street is too long");
-
         else return true;
     }
     

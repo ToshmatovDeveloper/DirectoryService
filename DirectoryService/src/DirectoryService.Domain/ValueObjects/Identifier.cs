@@ -1,4 +1,7 @@
 using System.Text.RegularExpressions;
+using CSharpFunctionalExtensions;
+using DirectoryService.Domain.ValueObjects;
+using Shared;
 
 namespace DirectoryService.Domain;
 
@@ -12,22 +15,29 @@ public record Identifier
     
     public Identifier(string value)
     {
-        if (!IsValid(value))
-        {
-            throw new ArgumentException("Identifier is not valid");
-        }
-
         Value = value;
     }
 
-    public string Value { get; } 
+    public string Value { get; }
 
-    public static bool IsValid(string value)
+    public static Result<Identifier, Error> Create(string value)
     {
-        return !string.IsNullOrWhiteSpace(value) 
-               && value.Length >= 3
-               && value.Length <= 150
-               && IdentifierRegex.IsMatch(value);
+        var validate =  Validate(value);
+        
+        if (validate.IsFailure)
+            return GeneralErrors.ValueIsInvalid("Value is invalid");
+
+        return new Identifier(value);
+    }
+    
+    public static Result<bool,Error> Validate(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length >= 150 
+                                             || value.Length <= 3 
+                                             || !IdentifierRegex.IsMatch(value))
+            return GeneralErrors.ValueIsRequired("Identifier");
+        
+        return true;
     }
     
     public bool Equal(object? obj)

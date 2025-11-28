@@ -1,38 +1,39 @@
-namespace DirectoryService.Domain;
+using CSharpFunctionalExtensions;
+using Shared;
+
+namespace DirectoryService.Domain.ValueObjects;
 
 public record TimeZone
 {
     public TimeZone(string value)
     {
-        if (!IsValid(value))
-        {
-            throw new Exception("Invalid timezone");
-        }
-        
         Value = value;
     }
     
     public string Value { get; private set; }
 
-    public static bool IsValid(string value)
+    public static Result<TimeZone, Error> Create(string value)
+    {
+        var validate =  Validate(value);
+        
+        if (validate.IsFailure)
+            return GeneralErrors.ValueIsInvalid("Value is invalid");
+
+        return new TimeZone(value);
+    }
+    
+    public static Result<bool,Error> Validate(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-        {
-            return false;
-        }
+            return GeneralErrors.ValueIsRequired("TimeZone");
 
-        try
+        var timeZone = TimeZoneInfo.FindSystemTimeZoneById(value);
+        
+        if (timeZone == null)
         {
-            _ = TimeZoneInfo.FindSystemTimeZoneById(value);
-            return true;
+            return GeneralErrors.ValueIsInvalid("TimeZone");
         }
-        catch (TimeZoneNotFoundException)
-        {
-            return false;
-        }
-        catch  (InvalidTimeZoneException)
-        {
-            return false;
-        }
+        
+        return true;
     }
 }
