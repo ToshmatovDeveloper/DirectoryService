@@ -26,13 +26,17 @@ public class LocationsService : ILocationsService
 
     public async Task<Result<Guid, Error>> Create(CreateLocationDto locationDto, CancellationToken cancellationToken)
     {
+        _logger.LogDebug("Creating new location");
+        
         var validationResult = await _validator.ValidateAsync(locationDto, cancellationToken);
 
         if (!validationResult.IsValid)
         {
-            return  GeneralErrors.ValueIsInvalid("Location");
+            _logger.LogWarning("Validation Failed");
+            
+            return GeneralErrors.ValueIsInvalid("Location");
         }
-        
+
         var locationId = Guid.NewGuid();
 
         var location = new Location(
@@ -40,17 +44,16 @@ public class LocationsService : ILocationsService
             new Name(locationDto.Name),
             new Address(locationDto.Address.Country, locationDto.Address.City, locationDto.Address.Street),
             new TimeZone(locationDto.TimeZone));
-        
+
         Result<Guid, Error> result = await _locationRepository.AddAsync(location, cancellationToken);
 
         if (result.IsFailure)
         {
             return result.Error;
         }
-        
+
         _logger.LogInformation("Location created with id {locationId}", locationId);
 
         return locationId;
-        
     }
 }

@@ -34,6 +34,6 @@ public sealed class EndpointResult<TValue> : IResult, IEndpointMetadataProvider
     
     public static void PopulateMetadata(MethodInfo method, EndpointBuilder builder)
     {
-        throw new NotImplementedException();
+        
     }
 }
