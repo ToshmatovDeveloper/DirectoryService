@@ -1,9 +1,10 @@
-using CSharpFunctionalExtensions;
-using DirectoryService.Application;
+using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Location;
+using DirectoryService.Application.Location.Create;
 using DirectoryService.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Shared;
+using Shared.Results;
 
 namespace DirectoryService.Presentation.Location;
 
@@ -11,21 +12,26 @@ namespace DirectoryService.Presentation.Location;
 [Route("api/[controller]")]
 public class LocationsController : ControllerBase
 {
-    private readonly ILocationsService  _locationsService;
     private readonly ILogger<LocationsController> _logger;
 
-    public LocationsController(ILocationsService locationsService)
+    public LocationsController(ILocationsService locationsService, 
+                               ICommandHandler<Guid, CreateLocationRequest> commandHandler, 
+                               ILogger<LocationsController> logger)
     {
-        _locationsService = locationsService;
+        _logger = logger;
     }
 
     [HttpPost]
-    public async Task<EndpointResult<Guid>> Create(CreateLocationDto locationDto,
+    public async Task<EndpointResult<Guid>> Create([FromServices] ICommandHandler<CreateLocationDto , 
+                                                   CreateLocationRequest> handler,
+                                                   CreateLocationDto request,
                                                    CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Вызван CreateLocation с данными: {@locationDto}", locationDto);        
+        _logger.LogDebug("Вызван CreateLocation с данными: {@locationDto}", request);        
         
-        var locationId = await _locationsService.Create(locationDto,cancellationToken);
+        var command = new CreateLocationRequest(request);
+        
+        var locationId = await handler.Handle(command,cancellationToken);
 
         if (locationId.IsFailure)
         {

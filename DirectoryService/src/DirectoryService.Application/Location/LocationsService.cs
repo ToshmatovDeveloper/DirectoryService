@@ -1,12 +1,12 @@
 using CSharpFunctionalExtensions;
+using DirectoryService.Application.Location.Create;
 using DirectoryService.Contracts;
-using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Shared;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
-namespace DirectoryService.Application;
+namespace DirectoryService.Application.Location;
 
 public class LocationsService : ILocationsService
 {
@@ -39,7 +39,7 @@ public class LocationsService : ILocationsService
 
         var locationId = Guid.NewGuid();
 
-        var location = new Location(
+        var location = new Domain.Location(
             locationId,
             new Name(locationDto.Name),
             new Address(locationDto.Address.Country, locationDto.Address.City, locationDto.Address.Street),
