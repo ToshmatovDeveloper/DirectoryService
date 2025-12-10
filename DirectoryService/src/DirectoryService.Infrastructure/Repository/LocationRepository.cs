@@ -18,9 +18,9 @@ public class LocationRepository : ILocationRepository
 
     public async Task<Result<Guid, Error>> AddAsync(Location location, CancellationToken cancellationToken)
     {
-        var existsByName = ExistsByName(location);
+        var existsByName = await ExistsByName(location);
         
-        var existsByAddress = ExistsByAddress(location);
+        var existsByAddress = await ExistsByAddress(location);
         
         if (existsByName.IsFailure || existsByAddress.IsFailure)
         {
@@ -34,9 +34,9 @@ public class LocationRepository : ILocationRepository
         return location.Id;
     }
     
-    public Result<bool, Error> ExistsByName(Location location)
+    public async Task<Result<bool, Error>> ExistsByName(Location location)
     {
-        var existLocationName = _dbContext.Locations
+        var existLocationName = await _dbContext.Locations
             .FirstOrDefaultAsync(x => x.Name == location.Name);
         
         if (existLocationName != null)
@@ -45,9 +45,9 @@ public class LocationRepository : ILocationRepository
         return true;
     }
     
-    public Result<bool, Error> ExistsByAddress(Location location)
+    public async Task<Result<bool, Error>> ExistsByAddress(Location location)
     {
-        var existLocationAddress = _dbContext.Locations
+        var existLocationAddress = await _dbContext.Locations
             .FirstOrDefaultAsync(x => x.Address == location.Address);
         
         if (existLocationAddress != null)
