@@ -18,9 +18,11 @@ public class LocationRepository : ILocationRepository
 
     public async Task<Result<Guid, Error>> AddAsync(Location location, CancellationToken cancellationToken)
     {
-        var exist = Exists(location);
+        var existsByName = ExistsByName(location);
         
-        if (exist.IsFailure)
+        var existsByAddress = ExistsByAddress(location);
+        
+        if (existsByName.IsFailure || existsByAddress.IsFailure)
         {
             return GeneralErrors.AlreadyExist();
         }
@@ -32,18 +34,25 @@ public class LocationRepository : ILocationRepository
         return location.Id;
     }
     
-    public Result<bool, Error> Exists(Location location)
+    public Result<bool, Error> ExistsByName(Location location)
     {
         var existLocationName = _dbContext.Locations
             .FirstOrDefaultAsync(x => x.Name == location.Name);
         
+        if (existLocationName != null)
+            return GeneralErrors.AlreadyExist();
+        
+        return true;
+    }
+    
+    public Result<bool, Error> ExistsByAddress(Location location)
+    {
         var existLocationAddress = _dbContext.Locations
             .FirstOrDefaultAsync(x => x.Address == location.Address);
-
-        if (existLocationName != null || existLocationAddress != null)
-        {
+        
+        if (existLocationAddress != null)
             return GeneralErrors.AlreadyExist();
-        }
+        
 
         return true;
     }

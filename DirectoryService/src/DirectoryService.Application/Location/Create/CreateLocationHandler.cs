@@ -32,8 +32,6 @@ public class CreateLocationHandler :ICommandHandler<Guid, CreateLocationRequest>
         CreateLocationRequest request, 
         CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Creating new location");
-        
         ValidationResult validationResult = await _validator.ValidateAsync(request,cancellationToken);
 
         if (!validationResult.IsValid)
