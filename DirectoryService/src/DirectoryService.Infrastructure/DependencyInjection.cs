@@ -1,4 +1,5 @@
 using DirectoryService.Application;
+using DirectoryService.Application.Location;
 using DirectoryService.Infrastructure.Repository;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

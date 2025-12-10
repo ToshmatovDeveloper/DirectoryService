@@ -4,6 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DirectoryService.Infrastructure.Configuration;
 
+public static class Index
+{
+    public const string NAME = "ix_location_name";
+    
+    public const string ADDRESS = "ix_location_address";
+}
+
 public class LocationConfiguration :IEntityTypeConfiguration<Location>
 {
     public void Configure(EntityTypeBuilder<Location> builder)
@@ -55,5 +62,11 @@ public class LocationConfiguration :IEntityTypeConfiguration<Location>
         
         builder.Property(d=>d.UpdatedAt)
             .HasColumnName("updated_at");
+
+        builder.HasIndex(x => x.Name).IsUnique().HasDatabaseName(Index.NAME);
+        
+        builder.HasIndex(x => x.Address).IsUnique().HasDatabaseName(Index.ADDRESS);
+        
+        
     }
 }

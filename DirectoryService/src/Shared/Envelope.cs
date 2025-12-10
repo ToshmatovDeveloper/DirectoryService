@@ -13,7 +13,7 @@ public record Envelope
     public DateTime TimeGenerated { get; }
     
     [JsonConstructor]
-    private Envelope(object? result, Errors?  errorList)
+    private Envelope(object? result, Errors? errorList)
     {
         Result = result;
         ErrorList = errorList;

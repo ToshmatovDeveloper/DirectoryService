@@ -1,5 +1,6 @@
 using DirectoryService;
 using DirectoryService.Infrastructure;
+using DirectoryService.Middleware;
 using DirectoryService.Presentation.Location;
 using Serilog;
 

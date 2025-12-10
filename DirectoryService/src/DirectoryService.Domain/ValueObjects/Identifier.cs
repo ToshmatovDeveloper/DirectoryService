@@ -1,9 +1,8 @@
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
-using DirectoryService.Domain.ValueObjects;
 using Shared;
 
-namespace DirectoryService.Domain;
+namespace DirectoryService.Domain.ValueObjects;
 
 /// <summary>
 /// Identifier value object

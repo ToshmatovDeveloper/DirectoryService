@@ -1,7 +1,5 @@
 using DirectoryService.Application;
 using DirectoryService.Infrastructure;
-using Microsoft.OpenApi.Models;
-using Shared;
 
 namespace DirectoryService;
 

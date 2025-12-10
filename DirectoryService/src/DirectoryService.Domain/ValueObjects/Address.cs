@@ -1,15 +1,15 @@
 using CSharpFunctionalExtensions;
 using Shared;
 
-namespace DirectoryService.Domain;
+namespace DirectoryService.Domain.ValueObjects;
 
 public record Address
 {
     public Address(string country, string city, string street)
     {
-            Country = country;
-            City = city;
-            Street = street;
+        Country = country;
+        City = city;
+        Street = street;
     }
     
     public string Country { get; }
