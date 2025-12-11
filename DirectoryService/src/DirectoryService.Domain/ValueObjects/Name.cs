@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using Shared;
@@ -30,7 +31,7 @@ public record Name
     
     public static Result<bool,Error> Validate(string value)
     {
-        if (string.IsNullOrWhiteSpace(value) || value.Length >= 150 
+         if (string.IsNullOrWhiteSpace(value) || value.Length >= 150 
                                              || value.Length <= 3 
                                              || !NameRegex.IsMatch(value))
             return GeneralErrors.ValueIsRequired("Name");

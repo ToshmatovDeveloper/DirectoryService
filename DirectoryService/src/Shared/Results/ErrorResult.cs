@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Shared;
+namespace Shared.Results;
 
 public sealed class ErrorResult : IResult
 {

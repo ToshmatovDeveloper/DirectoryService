@@ -1,6 +1,8 @@
 using DirectoryService.Application.Exceptions;
 using Shared;
 
+namespace DirectoryService.Middleware;
+
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
@@ -49,7 +51,7 @@ public class ExceptionMiddleware
                 errorList = new Errors(new[] 
                 {
                     Error.NotFound(new[] { new ErrorMessage("not_found", 
-                                        exception.Message, null) })
+                        exception.Message, null) })
                 });
                 break;
 

@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using DirectoryService.Domain.ValueObjects;
+using Path = DirectoryService.Domain.ValueObjects.Path;
 
 namespace DirectoryService.Domain;
 

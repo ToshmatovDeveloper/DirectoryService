@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
-namespace Shared;
+namespace Shared.Results;
 
 public sealed class EndpointResult<TValue> : IResult, IEndpointMetadataProvider
 {
