@@ -1,5 +1,4 @@
 using DirectoryService.Application.Validation;
-using DirectoryService.Contracts;
 using FluentValidation;
 using DirectoryService.Domain.ValueObjects;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
