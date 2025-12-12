@@ -6,16 +6,17 @@ namespace DirectoryService.Domain;
 
 public class Department
 {
-    private Department()
+    public Department(Guid id,
+        Name name,
+        Identifier identifier,
+        Guid? parentId,
+        Guid[] locationIds)
     {
-        
-    }
-    
-    private Department(Name name, Identifier identifier, Path path)
-    {
+        Id = id;
         Name = name;
         Identifier = identifier;
-        Path = path;
+        ParentId = parentId;
+        LocationId = locationIds;
     }
     
     public Guid Id { get; private set; }
@@ -24,7 +25,7 @@ public class Department
     
     public Identifier Identifier { get; private set; }
     
-    public Guid ParentId { get; private set; }
+    public Guid? ParentId { get; private set; }
     
     public Path Path { get; private set; }
     
@@ -40,9 +41,10 @@ public class Department
     
     public List<Department> Children { get; private set; }
     
+    
     public List<Guid>? PositionsId { get; private set; }
     
-    public List<Location> LocationId { get; private set; }
+    public Guid[] LocationId { get; private set; }
     
     /// <summary>
     /// Added list of departmentPosition and departmentLocation
