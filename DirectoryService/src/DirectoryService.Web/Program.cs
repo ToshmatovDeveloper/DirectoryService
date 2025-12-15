@@ -1,7 +1,7 @@
 using DirectoryService;
 using DirectoryService.Infrastructure;
 using DirectoryService.Middleware;
-using DirectoryService.Presentation.Location;
+using DirectoryService.Presentation;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

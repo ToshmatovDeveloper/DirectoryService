@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared.Results;
 
-namespace DirectoryService.Presentation.Location;
+namespace DirectoryService.Presentation;
 
 [ApiController]
 [Route("api/[controller]")]

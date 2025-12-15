@@ -54,7 +54,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.Property(d=>d.CreatedAt)
             .HasColumnName("created_at");
         
-        builder.Property(d=>d.Updated)
+        builder.Property(d=>d.UpdatedAt)
             .HasColumnName("updated_at");
 
         builder.HasMany(d => d.Positions)
