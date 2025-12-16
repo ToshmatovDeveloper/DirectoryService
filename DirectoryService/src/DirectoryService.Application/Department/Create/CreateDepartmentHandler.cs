@@ -23,7 +23,9 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> Handle(CreateDepartmentRequest request, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Error>> Handle(
+        CreateDepartmentRequest request, 
+        CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)

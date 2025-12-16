@@ -2,6 +2,7 @@ using CSharpFunctionalExtensions;
 using DirectoryService.Application;
 using DirectoryService.Application.Location;
 using DirectoryService.Domain;
+using DirectoryService.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Shared;
 
