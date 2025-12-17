@@ -29,7 +29,7 @@ public class DepartmentsController : ControllerBase
         CreateDepartmentDto request,
         CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Вызван CreateLocation с данными: {@locationDto}", request);        
+        _logger.LogDebug("Вызван CreateDepartment с данными: {@locationDto}", request);        
         
         var command = new CreateDepartmentRequest(request);
         
@@ -37,11 +37,11 @@ public class DepartmentsController : ControllerBase
 
         if (departmentId.IsFailure)
         {
-            _logger.LogWarning("Ошибка при создании локации: {Error}", departmentId.Error);
+            _logger.LogWarning("Ошибка при создании отделении: {Error}", departmentId.Error);
             return new EndpointResult<Guid>(departmentId.Error);
         }
         
-        _logger.LogInformation("Локация создана. Id = {Id}", departmentId.Value);
+        _logger.LogInformation("Отдел создан. Id = {Id}", departmentId.Value);
         
         return departmentId;
     }
