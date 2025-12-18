@@ -4,6 +4,7 @@ using DirectoryService.Application.Location;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared;
 
 namespace DirectoryService.Infrastructure.Repository;
@@ -11,10 +12,12 @@ namespace DirectoryService.Infrastructure.Repository;
 public class LocationRepository : ILocationRepository
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly ILogger<LocationRepository> _logger;
 
-    public LocationRepository(ApplicationDbContext dbContext)
+    public LocationRepository(ApplicationDbContext dbContext, ILogger<LocationRepository> logger)
     {
         _dbContext = dbContext;
+        _logger = logger;
     }
 
     public async Task<Result<Guid, Error>> AddAsync(Location location, CancellationToken cancellationToken)
@@ -27,9 +30,17 @@ public class LocationRepository : ILocationRepository
         {
             return GeneralErrors.AlreadyExist();
         }
-        
-        var result = await _dbContext.Locations.AddAsync(location, cancellationToken);
 
+        try
+        {
+            var result = await _dbContext.Locations.AddAsync(location, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return Error.Failure();        
+        }
+    
         await _dbContext.SaveChangesAsync(cancellationToken);
         
         return location.Id;

@@ -34,6 +34,8 @@ public class CreatePositionHandler : ICommandHandler<Guid, CreatePositionRequest
             return validationResult.ToError();
         }
         
+        
+        
         var nameResult = Name.Create(request.CreatePostionDto.Name);
         if (nameResult.IsFailure)
         {
@@ -45,6 +47,7 @@ public class CreatePositionHandler : ICommandHandler<Guid, CreatePositionRequest
         
         var positionId = Guid.NewGuid();
 
+        
         var departmentPositions = request.CreatePostionDto.DepartmentIds
             .Select(positionId => new DepartmentPosition(
                 new DepartmentId(Guid.NewGuid()),
@@ -52,20 +55,29 @@ public class CreatePositionHandler : ICommandHandler<Guid, CreatePositionRequest
             .ToList();
         
         Result<Domain.Position,  Error> positionResult;
-
+        
+        
         positionResult = Domain.Position.Create(
             positionId,
             nameResult.Value,
             descriptionResult,
             departmentPositions);
-
-        if (positionResult.IsFailure)
+    
+        var existResult = _positionRepository.AlreadyExistPosition(positionResult.Value, cancellationToken);
+        
+        if (positionResult.IsFailure || existResult.Result.IsFailure)
         {
-            _logger.LogError("Ошибка при создание новой должности!");
+            _logger.LogError("Invalid data!");
             return positionResult.Error;
         }
         
-        await _positionRepository.AddAsync(positionResult.Value, cancellationToken);
+        var result = await _positionRepository.AddAsync(positionResult.Value, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            _logger.LogError("Ошибка при создание новой должности!");
+            return result.Error;
+        }
 
         _logger.LogInformation("Department created successfully with id {departmentId}", positionId);
 

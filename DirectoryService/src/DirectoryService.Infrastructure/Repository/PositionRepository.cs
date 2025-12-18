@@ -17,13 +17,6 @@ public class PositionRepository : IPositionRepository
 
     public async Task<Result<Guid, Error>> AddAsync(Position position, CancellationToken cancellationToken)
     {
-        var alreadyExistPosition = await AlreadyExistPosition(position, cancellationToken);
-        
-        if (alreadyExistPosition.IsFailure)
-        {
-            return GeneralErrors.AlreadyExist();
-        }
-        
         var result = await _dbContext.Positions.AddAsync(position, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);

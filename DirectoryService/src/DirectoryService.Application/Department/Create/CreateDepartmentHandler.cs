@@ -35,12 +35,7 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
         }
 
         var nameResult = Name.Create(request.CreateDepartmentDto.Name);
-        if (nameResult.IsFailure)
-        {
-            _logger.LogError("Invalid DepartmentDto.Name");
-            return nameResult.Error;
-        }
-
+        
         var identifierResult = Identifier.Create(request.CreateDepartmentDto.Identifier);
         if (identifierResult.IsFailure)
         {
@@ -90,8 +85,14 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
             return departmentResult.Error;
         }
 
-        await _repository.AddAsync(departmentResult.Value, cancellationToken);
+        var result = await _repository.AddAsync(departmentResult.Value, cancellationToken);
 
+        if (result.IsFailure)
+        {
+            _logger.LogError("Ошибка при добавление отделении");
+            return result.Error;
+        }
+        
         _logger.LogInformation("Department created successfully with id {departmentId}", departmentId);
 
         return (Result<Guid, Error>)departmentId.Value!;
