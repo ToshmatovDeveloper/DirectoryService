@@ -24,7 +24,9 @@ public class LocationsService : ILocationsService
         _logger = logger;
     }
 
-    public async Task<Result<Guid, Error>> Create(CreateLocationDto locationDto, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Error>> Create(
+        CreateLocationDto locationDto,
+        CancellationToken cancellationToken)
     {
         _logger.LogDebug("Creating new location");
         

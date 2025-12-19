@@ -1,4 +1,6 @@
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.ValueObjects;
+using Shared;
 
 namespace DirectoryService.Domain;
 
@@ -8,12 +10,27 @@ public record Position
     {
         
     }
-    private Position(Name name, string description)
+    /*private Position(
+        Name name,
+        string description,
+        IEnumerable<DepartmentPosition> departments)
     { 
         Name = name;
         Description = description;
+    }*/
+
+    private Position(
+        Guid id,
+        Name name,
+        string description,
+        IEnumerable<DepartmentPosition> departments)
+    {
+        Id = id;
+        Name = name;
+        Description = description;
+        Departments = departments;
     }
-    
+
     public Guid Id { get; private set; }
     
     public Name Name { get; private set; }
@@ -26,5 +43,20 @@ public record Position
     
     public DateTime UpdatedAt { get; private set; }
     
-    public List<DepartmentPosition> Departments { get; private set; }
+    public IEnumerable<DepartmentPosition> Departments { get; private set; }
+
+    public static Result<Position, Error> Create(
+        Guid id,
+        Name name, 
+        string description,
+        IEnumerable<DepartmentPosition> departments)
+    {
+        var positionDepartmentsList = departments.ToList();
+        
+        return new Position(
+             id,
+             name,
+             description,
+             positionDepartmentsList);
+    }
 }

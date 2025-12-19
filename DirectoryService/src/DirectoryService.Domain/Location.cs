@@ -1,4 +1,6 @@
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.ValueObjects;
+using Shared;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
 namespace DirectoryService.Domain;
@@ -10,10 +12,11 @@ public record Location
         
     }
 
-    public Location(Guid id,
-                     Name name,
-                     Address address,
-                     TimeZone timeZone)
+    public Location(
+        Guid id,
+        Name name,
+        Address address,
+        TimeZone timeZone)
     {
         Id = id;
         Name = name;
@@ -21,7 +24,7 @@ public record Location
         TimeZone = timeZone;
     }
 
-    public Guid Id { get; private set; }
+    public Result<Guid, Error> Id { get; private set; }
     
     public Name Name { get; private set; }
     

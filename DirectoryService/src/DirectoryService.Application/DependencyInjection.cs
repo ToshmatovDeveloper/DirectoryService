@@ -1,6 +1,8 @@
 using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Department.Create;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
+using DirectoryService.Application.Position.Create;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Shared;
@@ -13,9 +15,9 @@ public static class DependencyInjection
     {
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
         
-        //services.AddScoped<ILocationsService, LocationsService>();
-        
         services.AddScoped<ICommandHandler<Guid, CreateLocationRequest>, CreateLocationHandler>();
+        services.AddScoped<ICommandHandler<Guid, CreateDepartmentRequest>, CreateDepartmentHandler>();
+        services.AddScoped<ICommandHandler<Guid, CreatePositionRequest>, CreatePositionHandler>();
 
         return services;
     }
