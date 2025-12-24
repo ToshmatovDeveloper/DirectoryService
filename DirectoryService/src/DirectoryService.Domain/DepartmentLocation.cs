@@ -1,10 +1,12 @@
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.ValueObjects;
+using Shared;
 
 namespace DirectoryService.Domain;
 
 public class DepartmentLocation
 {
-    public DepartmentLocation(DepartmentId departmentId, LocationId locationId)
+    public DepartmentLocation(Guid departmentId, LocationId locationId)
     {
     }
 
@@ -13,4 +15,5 @@ public class DepartmentLocation
     
     public Guid LocationId { get; private set; }
     public Location Location { get; private set; } = null!;
+    
 }

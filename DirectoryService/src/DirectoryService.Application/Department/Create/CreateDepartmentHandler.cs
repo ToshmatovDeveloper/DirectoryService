@@ -15,7 +15,9 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
     private readonly IValidator<CreateDepartmentRequest> _validator;
     private readonly ILogger<CreateDepartmentHandler> _logger;
 
-    public CreateDepartmentHandler(IDepartmentRepository repository, IValidator<CreateDepartmentRequest> validator,
+    public CreateDepartmentHandler(
+        IDepartmentRepository repository,
+        IValidator<CreateDepartmentRequest> validator,
         ILogger<CreateDepartmentHandler> logger)
     {
         _repository = repository;
@@ -43,12 +45,12 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
             return identifierResult.Error;
         }
 
-        var departmentId = new DepartmentId(Guid.NewGuid());
+        var departmentId = Guid.NewGuid();
 
 
         var departmentLocations = request.CreateDepartmentDto.LocationIds
             .Select(locationId => new DepartmentLocation(
-                new DepartmentId(Guid.NewGuid()),
+                departmentId,
                 new LocationId(locationId)))
             .ToList();
 
@@ -95,6 +97,6 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
         
         _logger.LogInformation("Department created successfully with id {departmentId}", departmentId);
 
-        return (Result<Guid, Error>)departmentId.Value!;
+        return (Result<Guid, Error>)departmentId!;
     }
 }

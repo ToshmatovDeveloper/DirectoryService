@@ -7,7 +7,7 @@ namespace DirectoryService.Domain;
 
 public sealed class Department
 {
-    public DepartmentId Id { get; private set; } 
+    public Guid Id { get; private set; } 
 
     public Name Name { get; private set; } 
 
@@ -15,7 +15,7 @@ public sealed class Department
 
     public Path Path { get; private set; }
 
-    public DepartmentId? ParentId { get; private set; }
+    public Guid? ParentId { get; private set; }
 
     public int Depth { get; private set; }
 
@@ -45,12 +45,12 @@ public sealed class Department
     public List<DepartmentLocation> Locations { get; private set; }
     
     public Department(
-        DepartmentId id,
+        Guid id,
         Name name,
         Identifier identifier,
         Path path,
         int depth,
-        DepartmentId? parentId,
+        Guid? parentId,
         IEnumerable<DepartmentLocation> departmentLocations)
     {
         Id = id;
@@ -66,12 +66,12 @@ public sealed class Department
     }
 
     public Department(
-        DepartmentId id,
+        Guid id,
         Name name,
         Identifier identifier,
         Path path,
         int depth,
-        DepartmentId? parentId,
+        Guid? parentId,
         bool isActive,
         IEnumerable<DepartmentLocation> departmentLocations)
     {
@@ -91,7 +91,7 @@ public sealed class Department
         Name name,
         Identifier identifier,
         IEnumerable<DepartmentLocation> departmentLocations,
-        DepartmentId? departmentId = null!)
+        Guid? departmentId = null!)
     {
        var departmentLocationsList = departmentLocations.ToList();
 
@@ -104,7 +104,7 @@ public sealed class Department
        var path = Path.CreateParent(identifier);
 
        return new Department(
-           departmentId ?? new DepartmentId(Guid.NewGuid()),
+           departmentId ?? Guid.NewGuid(),
            name,
            identifier,
            path,
@@ -118,7 +118,7 @@ public sealed class Department
         Identifier identifier,
         Department parent,
         IEnumerable<DepartmentLocation> departmentLocations,
-        DepartmentId? departmentId = null!)
+        Guid? departmentId = null!)
     {
         var departmentLocationsList = departmentLocations.ToList();
 
@@ -131,7 +131,7 @@ public sealed class Department
         var path = parent.Path.CreateChild(identifier);
 
         return new Department(
-            departmentId ?? new DepartmentId(Guid.NewGuid()),
+            departmentId ??  Guid.NewGuid(),
             name,
             identifier,
             path,
@@ -144,7 +144,7 @@ public sealed class Department
         Name name,
         Identifier identifier,
         IEnumerable<DepartmentLocation> departmentLocations,
-        DepartmentId? departmentId = null!)
+        Guid? departmentId = null!)
     {
         var departmentLocationsList = departmentLocations.ToList();
 
@@ -157,7 +157,7 @@ public sealed class Department
         var path = Path.CreateParent(identifier);
 
         return new Department(
-            departmentId ?? new DepartmentId(Guid.NewGuid()),
+            departmentId ?? Guid.NewGuid(),
             name,
             identifier,
             path,
@@ -172,7 +172,7 @@ public sealed class Department
         Identifier identifier,
         Department parent,
         IEnumerable<DepartmentLocation> departmentLocations,
-        DepartmentId? departmentId = null!)
+        Guid? departmentId = null!)
     {
         var departmentLocationsList = departmentLocations.ToList();
 
@@ -185,7 +185,7 @@ public sealed class Department
         var path = parent.Path.CreateChild(identifier);
 
         return new Department(
-            departmentId ?? new DepartmentId(Guid.NewGuid()),
+            departmentId ?? Guid.NewGuid(),
             name,
             identifier,
             path,
@@ -193,5 +193,11 @@ public sealed class Department
             parent.Id,
             false,
             departmentLocationsList);
+    }
+
+    public void SetLocations(IEnumerable<DepartmentLocation> departmentLocations)
+    {
+        Locations.Clear();
+        Locations.AddRange(departmentLocations);
     }
 }

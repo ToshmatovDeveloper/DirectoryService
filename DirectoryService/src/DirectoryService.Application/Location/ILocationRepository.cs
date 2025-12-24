@@ -7,4 +7,7 @@ namespace DirectoryService.Application.Location;
 public interface ILocationRepository
 {
     Task<Result<Guid,Error>> AddAsync(Domain.Location location, CancellationToken cancellationToken);
+
+    Task<Result<Error>> CheckActiveLocationsDyId(
+        IEnumerable<LocationId> locationIds, CancellationToken cancellationToken);
 }

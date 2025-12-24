@@ -50,7 +50,7 @@ public class CreatePositionHandler : ICommandHandler<Guid, CreatePositionRequest
         
         var departmentPositions = request.CreatePostionDto.DepartmentIds
             .Select(positionId => new DepartmentPosition(
-                new DepartmentId(Guid.NewGuid()),
+                Guid.NewGuid(),
                 new PositionId(positionId)))
             .ToList();
         

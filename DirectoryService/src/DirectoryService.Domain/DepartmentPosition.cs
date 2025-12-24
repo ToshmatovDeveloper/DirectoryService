@@ -4,7 +4,7 @@ namespace DirectoryService.Domain;
 
 public class DepartmentPosition
 {
-    public DepartmentPosition(DepartmentId departmentId, PositionId positionId)
+    public DepartmentPosition(Guid departmentId, PositionId positionId)
     {
     }
     
