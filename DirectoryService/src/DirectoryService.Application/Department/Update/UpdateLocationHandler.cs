@@ -20,7 +20,7 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
     public UpdateLocationHandler(
         IDepartmentRepository departmentRepository,
         ILocationRepository locationRepository,
-        IValidator<UpdateLocationRequest> validator, 
+        IValidator<UpdateLocationRequest> validator,
         ILogger<UpdateLocationHandler> logger)
     {
         _validator = validator;
@@ -30,11 +30,11 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
     }
 
     public async Task<Result<Guid, Error>> Handle(
-        UpdateLocationRequest request, 
+        UpdateLocationRequest request,
         CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        
+
         if (!validationResult.IsValid)
         {
             _logger.LogError("Invalid request");
@@ -42,7 +42,7 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
         }
 
         var departmentId = Guid.NewGuid();
-        
+
         var department = await _departmentRepository
             .GetByIdWithLocationAsync(departmentId, cancellationToken);
 
@@ -50,14 +50,14 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
         {
             return department.Error;
         }
-        
+
         if (!department.Value.IsActive)
         {
             return department.Error;
         }
-        
+
         var location = await _locationRepository.CheckActiveLocationsDyId(
-            request.UpdateLocationDto.LocationIds.Select(LocationId.Create), cancellationToken);
+            request.LocationsId.Select(LocationId.Create), cancellationToken);
 
         if (location.IsFailure)
         {
@@ -70,12 +70,14 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
         {
             var departmentLocation = new DepartmentLocation(
                 departmentId, LocationId.Create(locationId.DepartmentId));
-            
+
             departmentLocations.Add(departmentLocation);
         }
-        
+
         department.Value.SetLocations(departmentLocations);
 
+        await _departmentRepository.Save();
+        
         return departmentId;
     }
 }

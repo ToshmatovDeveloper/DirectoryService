@@ -80,5 +80,9 @@ public class DepartmentRepository : IDepartmentRepository
                 GeneralErrors.Failure());
         }
     }
-    
+
+    public async Task Save()
+    {
+        await _dbContext.SaveChangesAsync();
+    }
 }

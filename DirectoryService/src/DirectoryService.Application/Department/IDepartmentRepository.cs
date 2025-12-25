@@ -13,4 +13,6 @@ public interface IDepartmentRepository
     
     Task<Result<Domain.Department, Error>> GetByIdWithLocationAsync(Guid depatmentId, CancellationToken cancellationToken);
     
+    Task Save();
+    
 }
