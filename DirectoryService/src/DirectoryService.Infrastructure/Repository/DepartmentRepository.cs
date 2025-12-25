@@ -19,7 +19,7 @@ public class DepartmentRepository : IDepartmentRepository
         _logger = logger;
     }
 
-    public async Task<Result<DepartmentId, Error>> AddAsync(Department department, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Error>> AddAsync(Department department, CancellationToken cancellationToken)
     {
         try
         {
@@ -42,7 +42,7 @@ public class DepartmentRepository : IDepartmentRepository
         {
             var department = await _dbContext.Departments
                 .Include(d => d.Parent)
-                .FirstOrDefaultAsync(d => d.Id.Value == id, cancellationToken);
+                .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
 
             if (department == null)
             {
@@ -57,5 +57,32 @@ public class DepartmentRepository : IDepartmentRepository
             return Result.Failure<Department, Error>(
                 GeneralErrors.Failure());
         }
+    }
+
+    public async Task<Result<Department, Error>> GetByIdWithLocationAsync(Guid depatmentId, CancellationToken cancellationToken)
+    {   
+        try
+        {
+            var department = await _dbContext.Departments
+                .Include(d => d.Locations)
+                .FirstOrDefaultAsync(d => d.Id == depatmentId, cancellationToken);
+
+            if (department == null)
+            {
+                return Error.NotFound();
+            }
+
+            return department;
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure<Department, Error>(
+                GeneralErrors.Failure());
+        }
+    }
+
+    public async Task Save()
+    {
+        await _dbContext.SaveChangesAsync();
     }
 }

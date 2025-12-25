@@ -1,10 +1,14 @@
+using CSharpFunctionalExtensions;
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Department.Create;
+using DirectoryService.Application.Department.Update;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
 using DirectoryService.Contracts;
+using DirectoryService.Contracts.Update;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Shared;
 using Shared.Results;
 
 namespace DirectoryService.Presentation;
@@ -43,6 +47,21 @@ public class DepartmentsController : ControllerBase
         
         _logger.LogInformation("Отдел создан. Id = {Id}", departmentId.Value);
         
+        return departmentId;
+    }
+
+    [HttpPut("{departmentId}/locations")]
+    public async Task<Result<Guid, Error>> UpdateLocation(
+        [FromRoute] Guid departmentId,
+        [FromBody] IEnumerable<Guid> locationsId,
+        [FromServices] UpdateLocationHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(new UpdateLocationRequest(departmentId, locationsId), cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error;
+
         return departmentId;
     }
 }

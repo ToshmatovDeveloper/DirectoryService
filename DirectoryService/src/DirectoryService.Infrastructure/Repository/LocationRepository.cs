@@ -68,5 +68,20 @@ public class LocationRepository : ILocationRepository
 
         return true;
     }
+
+    public async Task<Result<Error>> CheckActiveLocationsDyId(
+        IEnumerable<LocationId> locationIds, CancellationToken cancellationToken)
+    {
+        var result = await _dbContext.Locations
+            .AnyAsync(x => locationIds
+                .Contains<>(x.Id) && x.IsActive == true);
+
+        if (result)
+        {
+            return Error.Failure();
+        }
+        
+        return GeneralErrors.AlreadyExist();
+    }
 }
 
