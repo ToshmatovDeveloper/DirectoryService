@@ -8,7 +8,7 @@ public class UpdateLocationRequestValidator : AbstractValidator<UpdateLocationRe
 {
     public UpdateLocationRequestValidator()
     {
-        RuleFor(x => x.UpdateLocationDto.LocationIds)
+        RuleFor(x => x.LocationsId)
             .NotEmpty()
             .WithError(GeneralErrors.ValueIsRequired("locationIds"))
             .Must(locationIds => locationIds != null
