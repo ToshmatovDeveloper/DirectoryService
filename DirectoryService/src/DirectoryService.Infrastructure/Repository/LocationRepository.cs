@@ -72,9 +72,12 @@ public class LocationRepository : ILocationRepository
     public async Task<Result<Error>> CheckActiveLocationsDyId(
         IEnumerable<LocationId> locationIds, CancellationToken cancellationToken)
     {
+        var ids = locationIds.Select(x => x.Value).ToList();
+
         var result = await _dbContext.Locations
-            .AnyAsync(x => locationIds
-                .Contains<>(x.Id) && x.IsActive == true);
+            .AnyAsync(
+                x => ids.Contains(x.Id.Value) && x.IsActive,
+                cancellationToken);
 
         if (result)
         {

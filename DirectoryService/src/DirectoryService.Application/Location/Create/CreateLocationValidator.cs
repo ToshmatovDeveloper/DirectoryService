@@ -1,4 +1,5 @@
 using DirectoryService.Contracts;
+using DirectoryService.Contracts.Create;
 using FluentValidation;
 
 namespace DirectoryService.Application.Location.Create;

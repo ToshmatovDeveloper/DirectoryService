@@ -4,6 +4,7 @@ using DirectoryService.Application.Location;
 using DirectoryService.Application.Validation;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
+using DirectoryService.Infrastructure.Database;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared;
@@ -15,16 +16,19 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
     private readonly IDepartmentRepository _departmentRepository;
     private readonly ILocationRepository _locationRepository;
     private readonly IValidator<UpdateLocationRequest> _validator;
+    private readonly ITransactionManager _transactionManager;
     private readonly ILogger<UpdateLocationHandler> _logger;
 
     public UpdateLocationHandler(
         IDepartmentRepository departmentRepository,
         ILocationRepository locationRepository,
         IValidator<UpdateLocationRequest> validator,
-        ILogger<UpdateLocationHandler> logger)
+        ILogger<UpdateLocationHandler> logger,
+        ITransactionManager transactionManager)
     {
         _validator = validator;
         _logger = logger;
+        _transactionManager = transactionManager;
         _departmentRepository = departmentRepository;
         _locationRepository = locationRepository;
     }
@@ -43,16 +47,27 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
 
         var departmentId = Guid.NewGuid();
 
+        var transactionScopeResult = await _transactionManager.BeginTransactionAsync(cancellationToken);
+
+        if (transactionScopeResult.IsFailure)
+        {
+            return transactionScopeResult.Error;
+        }
+
+        using var transactionScope = transactionScopeResult.Value;
+
         var department = await _departmentRepository
             .GetByIdWithLocationAsync(departmentId, cancellationToken);
 
         if (department.IsFailure)
         {
+            transactionScope.Rollback();
             return department.Error;
         }
 
         if (!department.Value.IsActive)
         {
+            transactionScope.Rollback();
             return department.Error;
         }
 
@@ -61,6 +76,7 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
 
         if (location.IsFailure)
         {
+            transactionScope.Rollback();
             return department.Error;
         }
 
@@ -76,7 +92,9 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
 
         department.Value.SetLocations(departmentLocations);
 
-        await _departmentRepository.Save();
+        await _transactionManager.SaveChangesAsync(cancellationToken);
+
+        transactionScope.Commit();
         
         return departmentId;
     }

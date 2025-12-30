@@ -1,4 +1,4 @@
-namespace DirectoryService.Contracts;
+namespace DirectoryService.Contracts.Create;
 
 public record CreateLocationDto(string Name, AddressDto  Address, string TimeZone );
 

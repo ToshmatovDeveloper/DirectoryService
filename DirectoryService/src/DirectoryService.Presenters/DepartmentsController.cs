@@ -5,6 +5,7 @@ using DirectoryService.Application.Department.Update;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
 using DirectoryService.Contracts;
+using DirectoryService.Contracts.Create;
 using DirectoryService.Contracts.Update;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

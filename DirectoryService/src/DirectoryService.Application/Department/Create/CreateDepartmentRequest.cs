@@ -1,5 +1,6 @@
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Contracts;
+using DirectoryService.Contracts.Create;
 
 namespace DirectoryService.Application.Department.Create;
 

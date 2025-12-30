@@ -2,6 +2,7 @@ using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
 using DirectoryService.Contracts;
+using DirectoryService.Contracts.Create;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared.Results;

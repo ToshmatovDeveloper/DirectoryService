@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Contracts;
+using DirectoryService.Contracts.Create;
 using DirectoryService.Domain.ValueObjects;
 using Shared;
 

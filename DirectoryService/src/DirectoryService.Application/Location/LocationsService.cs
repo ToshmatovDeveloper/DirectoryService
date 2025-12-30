@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Application.Location.Create;
 using DirectoryService.Contracts;
+using DirectoryService.Contracts.Create;
 using DirectoryService.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Shared;
