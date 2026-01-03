@@ -31,10 +31,15 @@ public record Path
         return newPathCreateResult.Value;
     }
     
-    public static Path CreateParent(Identifier identifier)
+    public static Result<Path, Error> CreateParent(Identifier identifier)
     {
-        return new Path(identifier.Value);
+        Result<Path, Error> newPath = Path.Create(identifier.Value);
+        if (newPath.IsFailure)
+            return newPath.Error;
+
+        return newPath.Value;
     }
+
     
     public Path CreateChild(Identifier childIdentifier)
     {
@@ -57,6 +62,15 @@ public record Path
             return GeneralErrors.ValueIsRequired(null);
       
         return true;
+    }
+
+    public static Result<Path, Error> CalculatePath(Path parentPath, Identifier chldIdentifier)
+    {
+        var newPath = Path.Create(parentPath.Value + "." + chldIdentifier.Value);
+        if (newPath.IsFailure)
+            return Error.Failure();
+        
+        return newPath;
     }
     
 }
