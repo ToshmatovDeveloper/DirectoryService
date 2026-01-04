@@ -1,22 +1,25 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Application.Department;
 using DirectoryService.Domain;
-using DirectoryService.Domain.ValueObjects;
+using DirectoryService.Infrastructure.Factory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared;
+using Path = DirectoryService.Domain.ValueObjects.Path;
 
 namespace DirectoryService.Infrastructure.Repository;
 
 public class DepartmentRepository : IDepartmentRepository
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly ISqlConnectionFactory _sqlConnectionFactory;
     private readonly ILogger<DepartmentRepository> _logger;
 
-    public DepartmentRepository(ApplicationDbContext dbContext, ILogger<DepartmentRepository> logger)
+    public DepartmentRepository(ApplicationDbContext dbContext, ILogger<DepartmentRepository> logger, ISqlConnectionFactory sqlConnectionFactory)
     {
         _dbContext = dbContext;
         _logger = logger;
+        _sqlConnectionFactory = sqlConnectionFactory;
     }
 
     public async Task<Result<Guid, Error>> AddAsync(Department department, CancellationToken cancellationToken)
@@ -36,13 +39,17 @@ public class DepartmentRepository : IDepartmentRepository
         return department.Id;
     }
 
-    public async Task<Result<Department, Error>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Result<Department, Error>> GetByIdWithLockAsync(Guid id, CancellationToken cancellationToken)
     {
         try
         {
-            var department = await _dbContext.Departments
+            /*var department = await _dbContext.Departments
                 .Include(d => d.Parent)
-                .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
+                .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);*/
+
+            var department = await _dbContext.Departments
+                .FromSql($"SELECT * FROM departments WHERE Id = {id} FOR UPDATE ")
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (department == null)
             {
@@ -63,6 +70,9 @@ public class DepartmentRepository : IDepartmentRepository
     {   
         try
         {
+            await _dbContext.Database.ExecuteSqlRawAsync(
+                "SELECT capacity FROM department_id WHERE Id = @depatmentId FOR UPDATE ", depatmentId,  cancellationToken);
+            
             var department = await _dbContext.Departments
                 .Include(d => d.Locations)
                 .FirstOrDefaultAsync(d => d.Id == depatmentId, cancellationToken);
@@ -79,6 +89,22 @@ public class DepartmentRepository : IDepartmentRepository
             return Result.Failure<Department, Error>(
                 GeneralErrors.Failure());
         }
+    }
+
+    public async Task<UnitResult<Error>> UpdateSubtreePaths(Department department, Path oldPath,
+        CancellationToken cancellationToken)
+    {
+        using var connection = await _sqlConnectionFactory.CreateConnectionAsync(cancellationToken);
+
+        const string sql = """
+                           UPDATE departments
+                           SET depth = @departmentDepth + (depth - nlevel(@oldPath::ltree) + 1),
+                               path = @departmentPath::ltree || subpath(path, nlevel(@oldPath::ltree))
+                           WHERE path <@ @oldPath::ltree
+                           AND path != @oldPath::ltree
+                           """;
+
+        return UnitResult.Success<Error>();
     }
 
     public async Task Save()

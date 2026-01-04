@@ -66,7 +66,7 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
         }
         else
         {
-            var parentResult = await _repository.GetByIdAsync(request.CreateDepartmentDto.ParentId, cancellationToken);
+            var parentResult = await _repository.GetByIdWithLockAsync(request.CreateDepartmentDto.ParentId, cancellationToken);
             if (parentResult.IsFailure)
             {
                 _logger.LogError("Parent department not found");

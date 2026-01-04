@@ -107,7 +107,7 @@ public sealed class Department
            departmentId ?? Guid.NewGuid(),
            name,
            identifier,
-           path,
+           path.Value,
            0,
            null,
            departmentLocationsList);
@@ -160,7 +160,7 @@ public sealed class Department
             departmentId ?? Guid.NewGuid(),
             name,
             identifier,
-            path,
+            path.Value,
             0,
             null,
             false,
@@ -195,9 +195,45 @@ public sealed class Department
             departmentLocationsList);
     }
 
-    public void SetLocations(IEnumerable<DepartmentLocation> departmentLocations)
+    public void  SetLocations(IEnumerable<DepartmentLocation> departmentLocations)
     {
         Locations.Clear();
         Locations.AddRange(departmentLocations);
+    }
+
+    public UnitResult<Error> SetParent(Department parent)
+    {
+        if (parent == this)
+        {
+            return Error.Conflict(new ErrorMessage(
+                "self.department",
+                "Can not set itself",
+                "parent"));
+        }
+        
+        var newPath = Path.CalculatePath(parent.Path, Identifier);
+        if (newPath.IsFailure)
+            return Error.Failure();
+        
+        var newDepth = parent.Depth+1;
+        
+        ParentId = parent?.Id;
+        Depth = newDepth;
+        Path = newPath.Value;
+
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> SetParentRoot()
+    {
+        ParentId = null;
+        Depth = 0;
+        var rootPathResult = Path.CreateParent(Identifier);
+        if (rootPathResult.IsFailure)
+            return rootPathResult.Error;
+        
+        Path = rootPathResult.Value;
+        return UnitResult.Success<Error>();
+
     }
 }
