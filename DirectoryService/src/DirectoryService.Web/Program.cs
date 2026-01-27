@@ -1,4 +1,4 @@
-using DirectoryService;
+using DirectoryService.Application;
 using DirectoryService.Infrastructure;
 using DirectoryService.Middleware;
 using DirectoryService.Presentation;
@@ -10,6 +10,10 @@ builder.Host.UseSerilog();
 
 builder.Services.AddScoped<ApplicationDbContext>(_ =>
     new ApplicationDbContext(builder.Configuration.GetConnectionString("DirectoryServiceDb")!));
+
+builder.Services
+    .AddApplication()
+    .AddInfrastructureDependencies();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -34,3 +38,8 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 app.Run();
+
+namespace DirectoryService
+{
+    public partial class Program;
+}

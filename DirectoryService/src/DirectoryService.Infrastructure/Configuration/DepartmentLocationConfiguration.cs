@@ -1,4 +1,5 @@
 using DirectoryService.Domain;
+using DirectoryService.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,5 +22,6 @@ public class DepartmentLocationConfiguration : IEntityTypeConfiguration<Departme
         builder.HasOne(dl => dl.Location)
             .WithMany(dl => dl.Departments)
             .HasForeignKey(dl => dl.LocationId);
+
     }
 }

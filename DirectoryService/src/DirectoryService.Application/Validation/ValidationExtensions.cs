@@ -1,4 +1,3 @@
-using System.Text.Json;
 using FluentValidation.Results;
 using Shared;
 
@@ -8,14 +7,14 @@ public static class ValidationExtensions
 {
     public static Error ToError(this ValidationResult validationResult)
     {
-        List<ValidationFailure> validationErrors = validationResult.Errors;
+        var validationErrors = validationResult.Errors;
 
-        IEnumerable<IReadOnlyList<ErrorMessage>> errors =
-            from validationError in validationErrors
-            let errorMessage = validationError.ErrorMessage
-            let error = JsonSerializer.Deserialize<Error>(errorMessage)
-            select error.Messages;
+        var errorMessages = validationErrors.Select(v =>
+            new ErrorMessage(
+                v.ErrorCode ?? "validation.error",
+                v.ErrorMessage,
+                v.PropertyName));
 
-        return Error.Validation(errors.SelectMany(e => e));
+        return Error.Validation(errorMessages);
     }
 }

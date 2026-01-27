@@ -4,7 +4,6 @@ using DirectoryService.Application.Location;
 using DirectoryService.Application.Validation;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
-using DirectoryService.Infrastructure.Database;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared;

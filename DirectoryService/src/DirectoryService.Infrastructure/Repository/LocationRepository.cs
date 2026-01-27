@@ -43,7 +43,7 @@ public class LocationRepository : ILocationRepository
     
         await _dbContext.SaveChangesAsync(cancellationToken);
         
-        return location.Id;
+        return location.Id.Value;
     }
     
     public async Task<Result<bool, Error>> ExistsByName(Location location)

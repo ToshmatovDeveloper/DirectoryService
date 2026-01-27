@@ -1,0 +1,8 @@
+namespace DirectoryService.Tests;
+
+public class MoveDepartmentsTests : DirectoryBaseTests
+{
+    protected MoveDepartmentsTests(DepartmentTestWebFactory factory) : base(factory)
+    {
+    }
+}

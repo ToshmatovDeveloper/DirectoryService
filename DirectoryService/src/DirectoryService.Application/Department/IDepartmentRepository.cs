@@ -12,7 +12,7 @@ public interface IDepartmentRepository
 {
     Task<Result<Guid,Error>> AddAsync(Domain.Department department, CancellationToken cancellationToken);
     
-    Task<Result<Domain.Department, Error>> GetByIdWithLockAsync(Guid id, CancellationToken cancellationToken);
+    Task<Result<Domain.Department, Error>> GetByIdWithLockAsync(Guid? id, CancellationToken cancellationToken);
     
     Task<Result<Domain.Department, Error>> GetByIdWithLocationAsync(Guid depatmentId, CancellationToken cancellationToken);
     

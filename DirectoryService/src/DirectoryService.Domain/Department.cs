@@ -7,6 +7,11 @@ namespace DirectoryService.Domain;
 
 public sealed class Department
 {
+    // Parameterless constructor required by EF Core for materialization
+    private Department()
+    {
+    }
+
     public Guid Id { get; private set; } 
 
     public Name Name { get; private set; } 

@@ -1,5 +1,5 @@
 using CSharpFunctionalExtensions;
-using DirectoryService.Infrastructure.Database;
+using DirectoryService.Application.Abstractions;
 using Microsoft.Extensions.Logging;
 using Shared;
 using Path = DirectoryService.Domain.ValueObjects.Path;

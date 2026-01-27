@@ -39,7 +39,7 @@ public class DepartmentRepository : IDepartmentRepository
         return department.Id;
     }
 
-    public async Task<Result<Department, Error>> GetByIdWithLockAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Result<Department, Error>> GetByIdWithLockAsync(Guid? id, CancellationToken cancellationToken)
     {
         try
         {
