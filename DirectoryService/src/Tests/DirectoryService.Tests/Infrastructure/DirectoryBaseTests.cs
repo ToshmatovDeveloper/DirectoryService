@@ -37,5 +37,14 @@ public class DirectoryBaseTests : IClassFixture<DepartmentTestWebFactory>, IAsyn
 
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     }
+    
+    protected async Task<T> ExecuteHandler<T>(Func<T, Task<T>> action)
+    {
+        await using var scope = Services.CreateAsyncScope();
+
+        var sut = scope.ServiceProvider.GetRequiredService<T>();
+
+        return await action(sut);
+    }
 
 }

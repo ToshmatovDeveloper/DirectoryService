@@ -1,7 +1,6 @@
 using System.Data.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using DirectoryService;
 using DirectoryService.Application.Department.Create;
 using DirectoryService.Infrastructure;
 using DirectoryService.Infrastructure.Factory;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql;
-using Npgsql.Internal;
 using Respawn;
 using Testcontainers.PostgreSql;
 
@@ -93,17 +91,24 @@ public class DepartmentTestWebFactory : WebApplicationFactory<Program>, IAsyncLi
 
     public async Task ResetDatabaseAsync()
     {
-        await _respawner.ResetAsync(_dbConnection);
+        
+        await using var connection = new NpgsqlConnection(_container.GetConnectionString());
+        await connection.OpenAsync();  
+    
+        await _respawner.ResetAsync(connection);  
     }
     
     private async Task InitializeRespawner()
     {
+        await using var connection = new NpgsqlConnection(_container.GetConnectionString());
+        await connection.OpenAsync(); 
+    
         _respawner = await Respawner.CreateAsync(
-            _dbConnection,
+            connection, 
             new RespawnerOptions
             {
-               DbAdapter = DbAdapter.Postgres,
-               SchemasToInclude = ["public"]
+                DbAdapter = DbAdapter.Postgres,
+                SchemasToInclude = ["public"]
             });
     }
 }

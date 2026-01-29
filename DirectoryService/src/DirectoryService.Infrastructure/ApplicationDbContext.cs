@@ -6,11 +6,8 @@ namespace DirectoryService.Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
-    private readonly string _connectionString;
-
-    public ApplicationDbContext(string connectionString)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        _connectionString = connectionString;
     }
 
     public static readonly ILoggerFactory MyLoggerFactory =
@@ -22,18 +19,6 @@ public class ApplicationDbContext : DbContext
                     category == DbLoggerCategory.Database.Command.Name &&
                     level == LogLevel.Information);
         });
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-
-        optionsBuilder.UseNpgsql(_connectionString);
-        
-        optionsBuilder
-                    .UseLoggerFactory(MyLoggerFactory)
-                    .EnableSensitiveDataLogging()   
-                    .EnableDetailedErrors();    
-    }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

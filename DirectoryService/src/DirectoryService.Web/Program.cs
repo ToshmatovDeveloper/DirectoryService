@@ -2,15 +2,21 @@ using DirectoryService.Application;
 using DirectoryService.Infrastructure;
 using DirectoryService.Middleware;
 using DirectoryService.Presentation;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
-builder.Services.AddScoped<ApplicationDbContext>(_ =>
-    new ApplicationDbContext(builder.Configuration.GetConnectionString("DirectoryServiceDb")!));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
 
+    options.UseLoggerFactory(ApplicationDbContext.MyLoggerFactory)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors();
+});
 builder.Services
     .AddApplication()
     .AddInfrastructureDependencies();
