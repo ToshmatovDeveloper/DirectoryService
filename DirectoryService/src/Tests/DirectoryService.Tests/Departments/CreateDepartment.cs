@@ -10,7 +10,7 @@ using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
 namespace DirectoryService.Tests;
 
-public class CreateDepartment : DirectoryBaseTests
+public class CreateDepartment : DepartmentBaseTests
 {
     public CreateDepartment(DepartmentTestWebFactory factory) : base(factory)
     {

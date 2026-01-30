@@ -1,75 +1,59 @@
-using DirectoryService.Application.Department.Create;
 using DirectoryService.Application.Department.Move;
+using DirectoryService.Application.Department.Update;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shared;
-using Path = DirectoryService.Domain.ValueObjects;
+using Path = DirectoryService.Domain.ValueObjects.Path;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
 namespace DirectoryService.Tests;
 
-public class MoveDepartmentsTests : DepartmentBaseTests
+public class UpdateDepartmentsLocationTests : DepartmentBaseTests
 {
-    public MoveDepartmentsTests(DepartmentTestWebFactory factory) : base(factory)
+    public UpdateDepartmentsLocationTests(DepartmentTestWebFactory factory) : base(factory)
     {
     }
 
     [Fact]
-    public async Task Move_Department_Should_Be_Success()
+    public async Task Update_departments_location_should_success()
     {
         //Arrange
+
         var locationId = await CreateLocation();
 
+        IEnumerable<Guid> locationsId = new[] { locationId.Value };
+
+        
         var departmentId = await CreateDepartment(locationId);
 
         var cancellationToken = CancellationToken.None;
 
         //Act
-
+        
         var result = await ExecuteHandler((sut) =>
         {
-            var request = new MoveDepartmentRequest(Guid.NewGuid());
-            return sut.Handle(departmentId, request, cancellationToken);
+            var request = new UpdateLocationRequest(departmentId, locationsId);
+            return sut.Handle(request, cancellationToken);
         });
+        
+        Console.WriteLine($"Result IsSuccess: {result.IsSuccess}");
+    
+        if (!result.IsSuccess && result.Error != null)
+        {
+            Console.WriteLine($"Error Type: {result.Error.Type}");
+            Console.WriteLine($"Error Messages: {string.Join(", ", result.Error.Messages)}");
+        }
 
         //Assert
-
-        await ExecuteInDb(async dbContext =>
-        {
-            var department = await dbContext.Departments
-                .FirstAsync(d => d.Id == result.Value, cancellationToken);
-
-            Assert.NotNull(department);
-            Assert.True(result.IsSuccess);
-            Assert.Empty(result.Error.Messages);
-        });
-    }
-
-    [Fact]
-    public async Task MoveDepartment_NonExistentDepartment_ShouldFail()
-    {
-        //Arrange
         
-        var locationId = await CreateLocation();
-
-        var departmentId = await CreateDepartment(locationId);
-
-        var cancellationToken = CancellationToken.None;
-        
-        // Act 
-        var result = await ExecuteHandler(async sut =>
-        {
-            var request = new MoveDepartmentRequest(null);
-            return await sut.Handle(departmentId, request, cancellationToken);
-        });
-
-        //Assert
-        Assert.False(result.IsSuccess);
-
+        Assert.True(result.IsSuccess, 
+            result.IsFailure 
+                ? $"Failed with error: {result.Error}" 
+                : "Expected success");    
     }
-
+    
+    
+    
     private async Task<LocationId> CreateLocation()
     {
         var locationId = LocationId.Create(Guid.NewGuid());
@@ -95,7 +79,7 @@ public class MoveDepartmentsTests : DepartmentBaseTests
         var id = Guid.NewGuid();
         var name = Name.Create("Department");
         var identifier = Identifier.Create("main");
-        var path = Path.Path.Create("it");
+        var path = Path.Create("it");
         int depth = 0;
         Guid? parentId = null;
 
@@ -122,13 +106,15 @@ public class MoveDepartmentsTests : DepartmentBaseTests
             return id;
         });
     }
-
-    private async Task<T> ExecuteHandler<T>(Func<MoveDepartmentHandler, Task<T>> action)
+    
+    private async Task<T> ExecuteHandler<T>(Func<UpdateLocationHandler, Task<T>> action)
     {
         await using var scope = Services.CreateAsyncScope();
 
-        var sut = scope.ServiceProvider.GetRequiredService<MoveDepartmentHandler>();
+        var sut = scope.ServiceProvider.GetRequiredService<UpdateLocationHandler>();
 
         return await action(sut);
     }
+
 }
+

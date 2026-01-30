@@ -3,12 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DirectoryService.Tests;
 
-public class DirectoryBaseTests : IClassFixture<DepartmentTestWebFactory>, IAsyncLifetime
+public class DepartmentBaseTests : IClassFixture<DepartmentTestWebFactory>, IAsyncLifetime
 {
     private readonly Func<Task> _resetDatabase;
     protected IServiceProvider Services { get; set; }
 
-    protected DirectoryBaseTests(DepartmentTestWebFactory factory)
+    protected DepartmentBaseTests(DepartmentTestWebFactory factory)
     {
         Services = factory.Services;
         
