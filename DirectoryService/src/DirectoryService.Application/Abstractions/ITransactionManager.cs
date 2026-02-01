@@ -1,9 +1,8 @@
 using System.Data;
 using CSharpFunctionalExtensions;
-using DirectoryService.Application.Abstractions;
 using Shared;
 
-namespace DirectoryService.Infrastructure.Database;
+namespace DirectoryService.Application.Abstractions;
 
 public interface ITransactionManager
 {

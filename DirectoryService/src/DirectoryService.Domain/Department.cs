@@ -7,6 +7,10 @@ namespace DirectoryService.Domain;
 
 public sealed class Department
 {
+    private Department()
+    {
+    }
+
     public Guid Id { get; private set; } 
 
     public Name Name { get; private set; } 

@@ -1,8 +1,10 @@
 using DirectoryService.Application;
+using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Department;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Position;
 using DirectoryService.Infrastructure.Database;
+using DirectoryService.Infrastructure.Factory;
 using DirectoryService.Infrastructure.Repository;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +16,9 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services)
     {
         
-        services.AddDbContext<ApplicationDbContext>();
+        //services.AddDbContext<ApplicationDbContext>();
 
+        services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IPositionRepository, PositionRepository>();

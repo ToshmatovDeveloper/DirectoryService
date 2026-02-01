@@ -40,7 +40,7 @@ public class CreateLocationHandler :ICommandHandler<Guid, CreateLocationRequest>
             //return GeneralErrors.ValueIsInvalid("Location");
         }
 
-        var locationId = Guid.NewGuid();
+        var locationId = LocationId.Create(Guid.NewGuid());
 
         var location = new Domain.Location(
             locationId,
@@ -59,6 +59,6 @@ public class CreateLocationHandler :ICommandHandler<Guid, CreateLocationRequest>
 
         _logger.LogInformation("Location created with id {locationId}", locationId);
 
-        return locationId;
+        return locationId.Value;
     }
 }
