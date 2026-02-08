@@ -1,14 +1,13 @@
-﻿using DirectoryService.Application.Abstractions;
-using DirectoryService.Application.Department.Create;
+﻿using DirectoryService.Application.Department.Create;
 using DirectoryService.Contracts.Create;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
-using DirectoryService.Infrastructure;
+using DirectoryService.Tests.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
-namespace DirectoryService.Tests;
+namespace DirectoryService.Tests.Departments;
 
 public class CreateDepartment : DepartmentBaseTests
 {
@@ -143,7 +142,7 @@ public class CreateDepartment : DepartmentBaseTests
 
     private async Task<Guid> CreateLocation()
     {
-        var locationId = LocationId.Create(Guid.NewGuid());
+        var locationId = Guid.NewGuid();
         //Arrange
         return await ExecuteInDb(async dbContext =>
         {
@@ -156,7 +155,7 @@ public class CreateDepartment : DepartmentBaseTests
             dbContext.Locations.Add(location);
             await dbContext.SaveChangesAsync();
 
-            return locationId.Value;
+            return locationId;
         });
     }
 

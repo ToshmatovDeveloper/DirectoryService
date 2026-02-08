@@ -84,7 +84,7 @@ public class UpdateLocationHandler : ICommandHandler<Guid, UpdateLocationRequest
         foreach (var locationId in departmentLocations.ToList())
         {
             var departmentLocation = new DepartmentLocation(
-                departmentId, LocationId.Create(locationId.DepartmentId));
+                departmentId, locationId.DepartmentId);
 
             departmentLocations.Add(departmentLocation);
         }

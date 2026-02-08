@@ -40,7 +40,7 @@ public class LocationsService : ILocationsService
             return GeneralErrors.ValueIsInvalid("Location");
         }
 
-        var locationId = LocationId.Create(Guid.NewGuid());
+        var locationId = Guid.NewGuid();
 
         var location = new Domain.Location(
             locationId,
@@ -57,6 +57,6 @@ public class LocationsService : ILocationsService
 
         _logger.LogInformation("Location created with id {locationId}", locationId);
 
-        return locationId.Value;
+        return locationId;
     }
 }

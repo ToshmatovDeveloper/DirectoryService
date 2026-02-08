@@ -10,7 +10,7 @@ public class DepartmentLocation
     {
     }
 
-    public DepartmentLocation(Guid departmentId, LocationId locationId)
+    public DepartmentLocation(Guid departmentId, Guid locationId)
     {
         DepartmentId = departmentId;
         LocationId = locationId;
@@ -19,7 +19,7 @@ public class DepartmentLocation
     public Guid DepartmentId { get; private set; }
     public Department Department { get; private set; } = null!;
     
-    public LocationId LocationId { get; private set; }
+    public Guid LocationId { get; private set; }
     public Location Location { get; private set; } = null!;
     
 }

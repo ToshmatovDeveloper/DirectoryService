@@ -1,9 +1,10 @@
 using System.Data.Common;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Department.Create;
 using DirectoryService.Infrastructure;
 using DirectoryService.Infrastructure.Factory;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +14,7 @@ using Npgsql;
 using Respawn;
 using Testcontainers.PostgreSql;
 
-namespace DirectoryService.Tests;
+namespace DirectoryService.Tests.Infrastructure;
 
 public class DepartmentTestWebFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {

@@ -1,4 +1,5 @@
 using DirectoryService.Application;
+using DirectoryService.Application.Abstractions;
 using DirectoryService.Infrastructure;
 using DirectoryService.Middleware;
 using DirectoryService.Presentation;
@@ -17,6 +18,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors();
 });
+
+builder.Services.AddDbContext<IReadDbContext, ApplicationDbContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
+
+    options.UseLoggerFactory(ApplicationDbContext.MyLoggerFactory)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors();
+});
+
 builder.Services
     .AddApplication()
     .AddInfrastructureDependencies();

@@ -51,7 +51,7 @@ public class CreateDepartmentHandler : ICommandHandler<Guid, CreateDepartmentReq
         var departmentLocations = request.CreateDepartmentDto.LocationIds
             .Select(locationId => new DepartmentLocation(
                 departmentId,
-                new LocationId(locationId)))
+                locationId))
             .ToList();
 
 

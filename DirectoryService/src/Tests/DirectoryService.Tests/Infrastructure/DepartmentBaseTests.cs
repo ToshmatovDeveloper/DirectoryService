@@ -1,7 +1,7 @@
 using DirectoryService.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DirectoryService.Tests;
+namespace DirectoryService.Tests.Infrastructure;
 
 public class DepartmentBaseTests : IClassFixture<DepartmentTestWebFactory>, IAsyncLifetime
 {

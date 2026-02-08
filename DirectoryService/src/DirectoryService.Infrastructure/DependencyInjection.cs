@@ -15,10 +15,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services)
     {
-        
-        //services.AddDbContext<ApplicationDbContext>();
-
-        services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
+        services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; 
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IPositionRepository, PositionRepository>();

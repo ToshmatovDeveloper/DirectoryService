@@ -13,7 +13,7 @@ public record Location
     }
 
     public Location(
-        LocationId id,
+        Guid id,
         Name name,
         Address address,
         TimeZone timeZone)
@@ -24,7 +24,7 @@ public record Location
         TimeZone = timeZone;
     }
 
-    public LocationId Id { get; private set; }
+    public Guid Id { get; private set; }
     
     public Name Name { get; private set; }
     

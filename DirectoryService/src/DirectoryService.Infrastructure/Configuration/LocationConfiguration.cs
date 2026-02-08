@@ -23,8 +23,8 @@ public class LocationConfiguration :IEntityTypeConfiguration<Location>
         
         builder.Property(x => x.Id)
             .HasConversion(
-                locationId => locationId.Value,           
-                value => new LocationId(value))          
+                locationId => locationId,           
+                value => Guid.NewGuid())          
             .HasColumnName("Id");
         
         builder.OwnsOne(l=>l.Name, nb=>

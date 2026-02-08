@@ -1,8 +1,11 @@
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
+using DirectoryService.Application.Location.Query;
 using DirectoryService.Contracts;
 using DirectoryService.Contracts.Create;
+using DirectoryService.Contracts.Get;
+using DirectoryService.Contracts.GetRequests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared.Results;
@@ -22,6 +25,26 @@ public class LocationsController : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet("{locationId:guid}")]
+    public async Task<ActionResult<GetLocationByIdDto>> GetById(
+        [FromRoute] Guid locationId,
+        [FromServices] GetLocationByIdHandler  handler,
+        CancellationToken cancellationToken)
+    {
+        var @location = await handler.Handle(new GetLocationByIdRequest(locationId), cancellationToken); 
+        return Ok(@location);
+    }
+    
+    [HttpGet()]
+    public async Task<ActionResult<GetLocationsDto>> Get(
+        [FromQuery] GetLocationRequest request,
+        [FromServices] GetLocationHandler  handler,
+        CancellationToken cancellationToken)
+    {
+        var locations = await handler.Handle(request, cancellationToken);
+        return Ok();
+    }
+    
     [HttpPost]
     public async Task<EndpointResult<Guid>> Create([FromServices] ICommandHandler<CreateLocationDto , 
                                                    CreateLocationRequest> handler,

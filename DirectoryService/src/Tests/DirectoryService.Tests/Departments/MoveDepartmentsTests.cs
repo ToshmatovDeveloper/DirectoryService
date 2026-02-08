@@ -1,14 +1,13 @@
-using DirectoryService.Application.Department.Create;
 using DirectoryService.Application.Department.Move;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
+using DirectoryService.Tests.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shared;
 using Path = DirectoryService.Domain.ValueObjects;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
-namespace DirectoryService.Tests;
+namespace DirectoryService.Tests.Departments;
 
 public class MoveDepartmentsTests : DepartmentBaseTests
 {
@@ -70,9 +69,9 @@ public class MoveDepartmentsTests : DepartmentBaseTests
 
     }
 
-    private async Task<LocationId> CreateLocation()
+    private async Task<Guid> CreateLocation()
     {
-        var locationId = LocationId.Create(Guid.NewGuid());
+        var locationId = Guid.NewGuid();
         //Arrange
         return await ExecuteInDb(async dbContext =>
         {
@@ -90,7 +89,7 @@ public class MoveDepartmentsTests : DepartmentBaseTests
         });
     }
 
-    private async Task<Guid> CreateDepartment(LocationId locationId)
+    private async Task<Guid> CreateDepartment(Guid locationId)
     {
         var id = Guid.NewGuid();
         var name = Name.Create("Department");
