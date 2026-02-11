@@ -1,6 +1,6 @@
 namespace DirectoryService.Contracts.Get;
 
-public record LocationDto
+public record LocationDto 
 {
     public Guid Id { get; init; }
     

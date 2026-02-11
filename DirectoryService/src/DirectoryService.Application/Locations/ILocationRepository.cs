@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 using DirectoryService.Domain.ValueObjects;
 using Shared;
 
-namespace DirectoryService.Application.Location;
+namespace DirectoryService.Application.Locations;
 
 public interface ILocationRepository
 {

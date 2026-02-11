@@ -44,10 +44,6 @@ public class DepartmentRepository : IDepartmentRepository
     {
         try
         {
-            /*var department = await _dbContext.Departments
-                .Include(d => d.Parent)
-                .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);*/
-
             var department = await _dbContext.Departments
                 .FromSql($"SELECT * FROM departments WHERE Id = {id} FOR UPDATE ")
                 .FirstOrDefaultAsync(cancellationToken);

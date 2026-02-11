@@ -1,3 +1,4 @@
+using DirectoryService;
 using DirectoryService.Application;
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Infrastructure;
@@ -10,34 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
-
-    options.UseLoggerFactory(ApplicationDbContext.MyLoggerFactory)
-        .EnableSensitiveDataLogging()
-        .EnableDetailedErrors();
-});
-
-builder.Services.AddDbContext<IReadDbContext, ApplicationDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
-
-    options.UseLoggerFactory(ApplicationDbContext.MyLoggerFactory)
-        .EnableSensitiveDataLogging()
-        .EnableDetailedErrors();
-});
-
 builder.Services
-    .AddApplication()
-    .AddInfrastructureDependencies();
-
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddControllers()
+    .AddProgramDependencies()
+    .AddEndpointsApiExplorer()
+    .AddOpenApi()
+    .AddControllers()
     .AddApplicationPart(typeof(LocationsController).Assembly);
-
-builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
