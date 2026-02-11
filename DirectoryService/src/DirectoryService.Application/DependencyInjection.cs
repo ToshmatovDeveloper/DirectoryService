@@ -4,6 +4,7 @@ using DirectoryService.Application.Department.Move;
 using DirectoryService.Application.Department.Update;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
+using DirectoryService.Application.Location.Query;
 using DirectoryService.Application.Position.Create;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,8 @@ public static class DependencyInjection
         services.AddScoped<ICommandHandler<Guid, CreateDepartmentRequest>, CreateDepartmentHandler>();
         services.AddScoped<ICommandHandler<Guid, CreatePositionRequest>, CreatePositionHandler>();
         services.AddScoped<UpdateLocationHandler>();
+        services.AddScoped<GetLocationByIdHandler>();
+        services.AddScoped<GetLocationHandler>();
         services.AddScoped<MoveDepartmentHandler>();
 
         return services;

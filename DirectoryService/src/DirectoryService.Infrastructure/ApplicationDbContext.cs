@@ -1,10 +1,11 @@
+using DirectoryService.Application.Abstractions;
 using DirectoryService.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DirectoryService.Infrastructure;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext, IReadDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -30,4 +31,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<DepartmentPosition> DepartmentPositions { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Position> Positions { get; set; }
+
+    public IQueryable<Location> LocationsRead => Set<Location>().AsQueryable().AsNoTracking();
+    public IQueryable<Department> DepartmentsRead => Set<Department>().AsQueryable().AsNoTracking();
+    public IQueryable<Position> PositionsRead => Set<Position>().AsQueryable().AsNoTracking();
 }

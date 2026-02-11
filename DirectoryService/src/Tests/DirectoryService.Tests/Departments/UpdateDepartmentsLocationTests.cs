@@ -1,12 +1,12 @@
-using DirectoryService.Application.Department.Move;
 using DirectoryService.Application.Department.Update;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
+using DirectoryService.Tests.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Path = DirectoryService.Domain.ValueObjects.Path;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
-namespace DirectoryService.Tests;
+namespace DirectoryService.Tests.Departments;
 
 public class UpdateDepartmentsLocationTests : DepartmentBaseTests
 {
@@ -21,7 +21,7 @@ public class UpdateDepartmentsLocationTests : DepartmentBaseTests
 
         var locationId = await CreateLocation();
 
-        IEnumerable<Guid> locationsId = new[] { locationId.Value };
+        IEnumerable<Guid> locationsId = new[] { locationId };
 
         
         var departmentId = await CreateDepartment(locationId);
@@ -54,9 +54,9 @@ public class UpdateDepartmentsLocationTests : DepartmentBaseTests
     
     
     
-    private async Task<LocationId> CreateLocation()
+    private async Task<Guid> CreateLocation()
     {
-        var locationId = LocationId.Create(Guid.NewGuid());
+        var locationId = Guid.NewGuid();
         //Arrange
         return await ExecuteInDb(async dbContext =>
         {
@@ -74,7 +74,7 @@ public class UpdateDepartmentsLocationTests : DepartmentBaseTests
         });
     }
 
-    private async Task<Guid> CreateDepartment(LocationId locationId)
+    private async Task<Guid> CreateDepartment(Guid locationId)
     {
         var id = Guid.NewGuid();
         var name = Name.Create("Department");

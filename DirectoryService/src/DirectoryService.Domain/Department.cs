@@ -41,9 +41,6 @@ public sealed class Department
     
     public List<Location> LocationId { get; private set; }
     
-    /// <summary>
-    /// Added list of departmentPosition and departmentLocation
-    /// </summary>
     public List<DepartmentPosition> Positions { get; private set; }
     
     public List<DepartmentLocation> Locations { get; private set; }

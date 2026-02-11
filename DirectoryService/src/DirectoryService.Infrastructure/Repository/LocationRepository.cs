@@ -43,7 +43,7 @@ public class LocationRepository : ILocationRepository
     
         await _dbContext.SaveChangesAsync(cancellationToken);
         
-        return location.Id.Value;
+        return location.Id;
     }
     
     public async Task<Result<bool, Error>> ExistsByName(Location location)
@@ -76,7 +76,7 @@ public class LocationRepository : ILocationRepository
 
         var result = await _dbContext.Locations
             .AnyAsync(
-                x => ids.Contains(x.Id.Value) && x.IsActive,
+                x => ids.Contains(x.Id) && x.IsActive,
                 cancellationToken);
 
         if (result)
@@ -85,6 +85,15 @@ public class LocationRepository : ILocationRepository
         }
         
         return GeneralErrors.AlreadyExist();
+    }
+
+    public async Task<Location?> GetById(Guid locationId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Locations
+            .Include(x => x.Address)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(l => l.Id == locationId, cancellationToken);
+        
     }
 }
 

@@ -10,4 +10,6 @@ public interface ILocationRepository
 
     Task<Result<Error>> CheckActiveLocationsDyId(
         IEnumerable<LocationId> locationIds, CancellationToken cancellationToken);
+
+    Task<Domain.Location> GetById(Guid locationId, CancellationToken cancellationToken);
 }

@@ -60,7 +60,7 @@ public class CreatePositionHandler : ICommandHandler<Guid, CreatePositionRequest
         positionResult = Domain.Position.Create(
             positionId,
             nameResult.Value,
-            descriptionResult,
+            descriptionResult!,
             departmentPositions);
     
         var existResult = _positionRepository.AlreadyExistPosition(positionResult.Value, cancellationToken);
