@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.GetRequests;
 using DirectoryService.Contracts.Get;
 using DirectoryService.Contracts.GetRequests;
 using Microsoft.EntityFrameworkCore;
@@ -7,17 +8,17 @@ using Shared;
 
 namespace DirectoryService.Application.Location.Query;
 
-public class GetLocationHandler
+public class GetLocationsHandler
 {
     private readonly IReadDbContext _context;
 
-    public GetLocationHandler(IReadDbContext context)
+    public GetLocationsHandler(IReadDbContext context)
     {
         _context = context;
     }
 
     public async Task<PaginationResponse<LocationDto>> Handle(
-        GetLocationRequest request,
+        GetLocationsRequest request,
         CancellationToken cancellationToken)
     {
         var locationsQuery = _context.LocationsRead.AsQueryable();
