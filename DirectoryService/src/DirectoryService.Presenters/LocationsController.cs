@@ -31,7 +31,7 @@ public class LocationsController : ControllerBase
         [FromServices] GetLocationByIdHandler  handler,
         CancellationToken cancellationToken)
     {
-        var @location = await handler.Handle(new GetLocationByIdRequest(locationId), cancellationToken); 
+        var @location = await handler.Handle(new GetLocationByIdRequest(locationId, 1, 10), cancellationToken); 
         return Ok(@location);
     }
     

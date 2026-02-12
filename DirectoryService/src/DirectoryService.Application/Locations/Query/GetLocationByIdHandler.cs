@@ -40,26 +40,6 @@ public class GetLocationByIdHandler
 
         var totalCount = await departmentsQuery.CountAsync(cancellationToken);
 
-        var departments = await departmentsQuery
-            .Skip((request.Page - 1) * request.PageSize)
-            .Take(request.PageSize)
-            .Select(d => new DepartmentDto
-            {
-                Id = d.Id,
-                Identifier = d.Identifier.Value,
-                Name = d.Name.Value,
-                ParentId = d.ParentId!.Value,
-                Path = d.Path.Value,
-                IsActive = true 
-            })
-            .ToListAsync(cancellationToken);
-
-        var pagedDepartments = new PaginationResponse<DepartmentDto>(
-            departments,
-            request.Page,
-            request.PageSize,
-            totalCount);
-
         return new GetLocationByIdDto
         {
             Id = location.Id,

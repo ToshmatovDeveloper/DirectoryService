@@ -14,7 +14,8 @@ public interface IDepartmentRepository
     
     Task<Result<Domain.Department, Error>> GetByIdWithLockAsync(Guid? id, CancellationToken cancellationToken);
     
-    Task<Result<Domain.Department, Error>> GetByIdWithLocationAsync(Guid depatmentId, CancellationToken cancellationToken);
+    Task<Result<Domain.Department, Error>> GetByIdWithLocationAsync(Guid depatmentId, 
+        CancellationToken cancellationToken);
     
     Task<UnitResult<Error>> UpdateSubtreePaths(
         Domain.Department department,
