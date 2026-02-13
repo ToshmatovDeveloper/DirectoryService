@@ -67,6 +67,7 @@ public class GetLocationsHandler
             })
             .ToListAsync(cancellationToken);
 
-        return new PaginationResponse<LocationDto>(items, request.Page, totalCount);
+        return new PaginationResponse<LocationDto>(
+            items, request.Page, totalCount);
     }
 }

@@ -37,9 +37,7 @@ public class GetLocationByIdHandler
 
         var departmentsQuery = _readDbContext.DepartmentsRead
             .Where(d => d.LocationId.Any(loc => loc.Id == request.LocationId));
-
-        var totalCount = await departmentsQuery.CountAsync(cancellationToken);
-
+        
         return new GetLocationByIdDto
         {
             Id = location.Id,
