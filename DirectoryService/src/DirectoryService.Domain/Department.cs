@@ -11,11 +11,11 @@ public sealed class Department
     {
     }
 
-    public Guid Id { get; private set; } 
+    public Guid Id { get; private set; }
 
-    public Name Name { get; private set; } 
+    public Name Name { get; private set; }
 
-    public Identifier Identifier { get; private set; } 
+    public Identifier Identifier { get; private set; }
 
     public Path Path { get; private set; }
 
@@ -32,19 +32,19 @@ public sealed class Department
     public DateTime UpdatedAt { get; private set; }
 
     public DateTime? DeletedAt { get; private set; }
-    
+
     public Department? Parent { get; private set; }
-    
+
     public List<Department> Children { get; private set; }
-    
+
     public List<Guid>? PositionsId { get; private set; }
-    
+
     public List<Location> LocationId { get; private set; }
-    
+
     public List<DepartmentPosition> Positions { get; private set; }
-    
+
     public List<DepartmentLocation> Locations { get; private set; }
-    
+
     public Department(
         Guid id,
         Name name,
@@ -94,24 +94,24 @@ public sealed class Department
         IEnumerable<DepartmentLocation> departmentLocations,
         Guid? departmentId = null!)
     {
-       var departmentLocationsList = departmentLocations.ToList();
+        var departmentLocationsList = departmentLocations.ToList();
 
-       if(departmentLocationsList.Count == 0)
-           return Error.Validation(new ErrorMessage(
-               "department.location",
-               "Department locations must contain at least one location",
-               "deparmentLocationList"));
+        if (departmentLocationsList.Count == 0)
+            return Error.Validation(new ErrorMessage(
+                "department.location",
+                "Department locations must contain at least one location",
+                "deparmentLocationList"));
 
-       var path = Path.CreateParent(identifier);
+        var path = Path.CreateParent(identifier);
 
-       return new Department(
-           departmentId ?? Guid.NewGuid(),
-           name,
-           identifier,
-           path.Value,
-           0,
-           null,
-           departmentLocationsList);
+        return new Department(
+            departmentId ?? Guid.NewGuid(),
+            name,
+            identifier,
+            path.Value,
+            0,
+            null,
+            departmentLocationsList);
     }
 
     public static Result<Department, Error> CreateChild(
@@ -123,7 +123,7 @@ public sealed class Department
     {
         var departmentLocationsList = departmentLocations.ToList();
 
-        if(departmentLocationsList.Count == 0)
+        if (departmentLocationsList.Count == 0)
             return Error.Validation(new ErrorMessage(
                 "department.location",
                 "Department locations must contain at least one location",
@@ -132,7 +132,7 @@ public sealed class Department
         var path = parent.Path.CreateChild(identifier);
 
         return new Department(
-            departmentId ??  Guid.NewGuid(),
+            departmentId ?? Guid.NewGuid(),
             name,
             identifier,
             path,
@@ -149,7 +149,7 @@ public sealed class Department
     {
         var departmentLocationsList = departmentLocations.ToList();
 
-        if(departmentLocationsList.Count == 0)
+        if (departmentLocationsList.Count == 0)
             return Error.Validation(new ErrorMessage(
                 "department.location",
                 "Department locations must contain at least one location",
@@ -177,7 +177,7 @@ public sealed class Department
     {
         var departmentLocationsList = departmentLocations.ToList();
 
-        if(departmentLocationsList.Count == 0)
+        if (departmentLocationsList.Count == 0)
             return Error.Validation(new ErrorMessage(
                 "department.location",
                 "Department locations must contain at least one location",
@@ -196,7 +196,7 @@ public sealed class Department
             departmentLocationsList);
     }
 
-    public void  SetLocations(IEnumerable<DepartmentLocation> departmentLocations)
+    public void SetLocations(IEnumerable<DepartmentLocation> departmentLocations)
     {
         Locations.Clear();
         Locations.AddRange(departmentLocations);
@@ -211,13 +211,13 @@ public sealed class Department
                 "Can not set itself",
                 "parent"));
         }
-        
+
         var newPath = Path.CalculatePath(parent.Path, Identifier);
         if (newPath.IsFailure)
             return Error.Failure();
-        
-        var newDepth = parent.Depth+1;
-        
+
+        var newDepth = parent.Depth + 1;
+
         ParentId = parent?.Id;
         Depth = newDepth;
         Path = newPath.Value;
@@ -232,9 +232,8 @@ public sealed class Department
         var rootPathResult = Path.CreateParent(Identifier);
         if (rootPathResult.IsFailure)
             return rootPathResult.Error;
-        
+
         Path = rootPathResult.Value;
         return UnitResult.Success<Error>();
-
     }
 }

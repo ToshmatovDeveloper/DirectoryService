@@ -10,14 +10,6 @@ public record Position
     {
         
     }
-    /*private Position(
-        Name name,
-        string description,
-        IEnumerable<DepartmentPosition> departments)
-    { 
-        Name = name;
-        Description = description;
-    }*/
 
     private Position(
         Guid id,

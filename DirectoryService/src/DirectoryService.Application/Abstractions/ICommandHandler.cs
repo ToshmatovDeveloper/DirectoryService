@@ -5,7 +5,7 @@ namespace DirectoryService.Application.Abstractions;
 
 public interface ICommand;
 
-public interface ICommandHandler<TResponse, TCommand>
+public interface ICommandHandler<TResponse, in TCommand>
     where TCommand : ICommand
 {
     Task<Result<Guid, Error>> Handle(TCommand command, CancellationToken cancellationToken);

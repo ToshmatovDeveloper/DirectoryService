@@ -1,6 +1,6 @@
-namespace DirectoryService.Contracts.GetRequests;
+namespace DirectoryService.Application.GetRequests;
 
-public record GetLocationRequest(  
+public record GetLocationsRequest(  
     string? Search,
     bool  IsActive,
     Guid? DepartmentId,

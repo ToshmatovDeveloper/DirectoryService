@@ -1,6 +1,4 @@
-using CSharpFunctionalExtensions;
 using DirectoryService.Domain.ValueObjects;
-using Shared;
 using TimeZone = DirectoryService.Domain.ValueObjects.TimeZone;
 
 namespace DirectoryService.Domain;

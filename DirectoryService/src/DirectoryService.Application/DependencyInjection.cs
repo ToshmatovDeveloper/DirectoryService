@@ -25,7 +25,7 @@ public static class DependencyInjection
         services.AddScoped<ICommandHandler<Guid, CreatePositionRequest>, CreatePositionHandler>();
         services.AddScoped<UpdateLocationHandler>();
         services.AddScoped<GetLocationByIdHandler>();
-        services.AddScoped<GetLocationHandler>();
+        services.AddScoped<GetLocationsHandler>();
         services.AddScoped<MoveDepartmentHandler>();
 
         return services;
