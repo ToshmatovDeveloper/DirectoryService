@@ -19,7 +19,4 @@ public record GetLocationByIdDto
     public DateTime CreatedAt { get; init; }
     
     public DateTime UpdatedAt { get; init; }
-
-    public IReadOnlyList<DepartmentDto> Departmens {get; init; } = [];
-
 }

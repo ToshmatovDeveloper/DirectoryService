@@ -43,7 +43,7 @@ public class LocationsController : ControllerBase
         CancellationToken cancellationToken)
     {
         var locations = await handler.Handle(request, cancellationToken);
-        return Ok();
+        return Ok(locations);
     }
     
     [HttpPost]

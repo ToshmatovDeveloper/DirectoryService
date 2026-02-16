@@ -66,7 +66,7 @@ public class GetLocationsHandler
                 UpdatedAt = l.UpdatedAt,
             })
             .ToListAsync(cancellationToken);
-
+        
         return new PaginationResponse<LocationDto>(
             items, request.Page, totalCount);
     }

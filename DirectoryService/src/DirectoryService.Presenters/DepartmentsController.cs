@@ -1,11 +1,14 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Department.Create;
+using DirectoryService.Application.Department.Query;
 using DirectoryService.Application.Department.Update;
+using DirectoryService.Application.GetRequests;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
 using DirectoryService.Contracts;
 using DirectoryService.Contracts.Create;
+using DirectoryService.Contracts.Get;
 using DirectoryService.Contracts.Update;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -64,5 +67,15 @@ public class DepartmentsController : ControllerBase
             return result.Error;
 
         return departmentId;
+    }
+    
+    [HttpGet("{departments}/top-positions")]
+    public async Task<ActionResult<DepartmentDto>> GetTopDepartments(
+        [FromQuery] GetDepartmentsRequest request,
+        [FromServices] GetDepartmentsHandler  handler,
+        CancellationToken cancellationToken)
+    {
+        var locations = await handler.Handle(request, cancellationToken);
+        return Ok(locations);
     }
 }
