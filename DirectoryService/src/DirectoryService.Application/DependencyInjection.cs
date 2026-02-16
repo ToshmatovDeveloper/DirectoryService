@@ -1,6 +1,7 @@
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Department.Create;
 using DirectoryService.Application.Department.Move;
+using DirectoryService.Application.Department.Query;
 using DirectoryService.Application.Department.Update;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Location.Create;
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<UpdateLocationHandler>();
         services.AddScoped<GetLocationByIdHandler>();
         services.AddScoped<GetLocationsHandler>();
+        services.AddScoped<GetDepartmentsHandler>();
         services.AddScoped<MoveDepartmentHandler>();
 
         return services;
