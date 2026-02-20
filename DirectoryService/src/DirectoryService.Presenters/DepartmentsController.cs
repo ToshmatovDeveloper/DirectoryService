@@ -71,6 +71,16 @@ public class DepartmentsController : ControllerBase
     
     [HttpGet("{departments}/top-positions")]
     public async Task<ActionResult<DepartmentDto>> GetTopDepartments(
+        [FromQuery] GetTopDepartmentsRequest request,
+        [FromServices] GetTopDepartmentsHandler  handler,
+        CancellationToken cancellationToken)
+    {
+        var locations = await handler.Handle(request, cancellationToken);
+        return Ok(locations);
+    }
+    
+    [HttpGet("{departments}/roots?page=&size=&prefetch=")]
+    public async Task<ActionResult<DepartmentDto>> GetTopDepartments1(
         [FromQuery] GetDepartmentsRequest request,
         [FromServices] GetDepartmentsHandler  handler,
         CancellationToken cancellationToken)

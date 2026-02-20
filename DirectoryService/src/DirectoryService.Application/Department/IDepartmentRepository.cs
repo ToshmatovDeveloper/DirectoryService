@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Application.Department.Update;
+using DirectoryService.Contracts.Get;
 using DirectoryService.Contracts.Update;
 using DirectoryService.Domain.ValueObjects;
 using Shared;
@@ -22,5 +23,9 @@ public interface IDepartmentRepository
         Path oldPath,
         CancellationToken cancellationToken);
 
-    
+    Task<IReadOnlyList<DepartmentDto>> GetRootDepartment(
+        int page,
+        int size,
+        int prefetch,
+        CancellationToken cancellationToken);
 }
