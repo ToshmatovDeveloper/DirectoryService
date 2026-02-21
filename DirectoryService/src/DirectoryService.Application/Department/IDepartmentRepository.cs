@@ -22,10 +22,4 @@ public interface IDepartmentRepository
         Domain.Department department,
         Path oldPath,
         CancellationToken cancellationToken);
-
-    Task<IReadOnlyList<DepartmentDto>> GetRootDepartment(
-        int page,
-        int size,
-        int prefetch,
-        CancellationToken cancellationToken);
 }

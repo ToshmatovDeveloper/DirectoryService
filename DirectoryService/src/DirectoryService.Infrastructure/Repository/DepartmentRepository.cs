@@ -104,37 +104,7 @@ public class DepartmentRepository : IDepartmentRepository
 
         return UnitResult.Success<Error>();
     }
-
-    public async Task<IReadOnlyList<DepartmentDto>> GetRootDepartment(int page, int size, int prefetch, CancellationToken cancellationToken)
-    {
-        var skip = (page - 1) * size;
-        
-        var query = _dbContext.Departments
-            .Where(d => d.ParentId == null)
-            .OrderBy(d => d.Name)
-            .Skip(skip)
-            .Take(size)
-            .Select(root => new DepartmentDto
-            {
-                Id = root.Id,
-                Name = root.Name.Value,
-                Children = root.Children
-                    .OrderBy(c => c.Name)
-                    .Take(prefetch)
-                    .Select(child => new DepartmentDto
-                    {
-                        Id = child.Id,
-                        Name = child.Name.Value,
-                        HasMoreChildren = _dbContext.Departments
-                            .Any(x => x.ParentId == child.Id)
-                    }).ToList(),
-                HasMoreChildren = _dbContext.Departments
-                    .Any(x => x.ParentId == root.Id)
-            });
-        
-        return await query.ToListAsync(cancellationToken);
-    }
-
+    
     public async Task Save()
     {
         await _dbContext.SaveChangesAsync();
