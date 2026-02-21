@@ -126,8 +126,8 @@ public sealed class Department
         if (departmentLocationsList.Count == 0)
             return Error.Validation(new ErrorMessage(
                 "department.location",
-                "Department locations must contain at least one location",
-                "deparmentLocationsList"));
+                "Department locations must contain at least 1 location",
+                "deparment_LocationsList"));
 
         var path = parent.Path.CreateChild(identifier);
 
