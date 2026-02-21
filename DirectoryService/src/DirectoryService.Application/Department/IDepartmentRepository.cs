@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Application.Department.Update;
+using DirectoryService.Contracts.Get;
 using DirectoryService.Contracts.Update;
 using DirectoryService.Domain.ValueObjects;
 using Shared;
@@ -21,6 +22,4 @@ public interface IDepartmentRepository
         Domain.Department department,
         Path oldPath,
         CancellationToken cancellationToken);
-
-    
 }

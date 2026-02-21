@@ -15,6 +15,16 @@ public record DepartmentDto
     
     public bool IsActive { get; init; }
     
-    public int PositionsCount { get; init; }
+    public int Depth { get; init; }
     
+    public DateTime CreateAt {get; init;}
+    
+    public DateTime UpdatedAt {get; init;}
+    
+    public int PositionsCount {get; init;}
+    
+    public List<DepartmentDto> Children { get; init; }
+    
+    public bool HasMoreChildren {get; init;}
+
 }

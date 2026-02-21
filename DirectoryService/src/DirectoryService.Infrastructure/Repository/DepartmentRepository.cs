@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Department;
+using DirectoryService.Contracts.Get;
 using DirectoryService.Domain;
 using DirectoryService.Infrastructure.Factory;
 using Microsoft.EntityFrameworkCore;
@@ -103,7 +104,7 @@ public class DepartmentRepository : IDepartmentRepository
 
         return UnitResult.Success<Error>();
     }
-
+    
     public async Task Save()
     {
         await _dbContext.SaveChangesAsync();
