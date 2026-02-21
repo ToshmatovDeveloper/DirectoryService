@@ -26,6 +26,7 @@ public class GetDepartmentsHandler
             .Where(d => d.ParentId == null)
             .OrderBy(d => d.Name)
             .Skip(skip)
+            .Take(request.Size)
             .Select(r => new DepartmentDto
             {
                 Id = r.Id,
