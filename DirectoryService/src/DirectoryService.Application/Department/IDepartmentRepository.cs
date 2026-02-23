@@ -22,4 +22,6 @@ public interface IDepartmentRepository
         Domain.Department department,
         Path oldPath,
         CancellationToken cancellationToken);
+    
+    Task<Result<Domain.Department, Error>> SoftDeleteAsync(Guid departmentId, CancellationToken cancellationToken);
 }

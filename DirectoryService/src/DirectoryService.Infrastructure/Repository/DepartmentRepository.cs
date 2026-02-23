@@ -104,7 +104,29 @@ public class DepartmentRepository : IDepartmentRepository
 
         return UnitResult.Success<Error>();
     }
-    
+
+    public async Task<Result<Department, Error>> SoftDeleteAsync(Guid departmentId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var department = await _dbContext.Departments
+                .Where(d => d.Id == departmentId || d.IsActive == true)
+                .FirstOrDefaultAsync(cancellationToken);
+            
+            if (department == null)
+                return Error.NotFound();
+
+            department.SoftDelete();
+            
+            return department;
+        }
+        catch (Exception e)
+        {
+            return Result.Failure<Department, Error>(
+                GeneralErrors.NotFound());
+        }
+    }
+
     public async Task Save()
     {
         await _dbContext.SaveChangesAsync();
