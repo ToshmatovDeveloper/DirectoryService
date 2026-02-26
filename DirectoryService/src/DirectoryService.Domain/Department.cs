@@ -247,4 +247,27 @@ public sealed class Department
     {
         Path = newPath;
     }
+
+    public bool LocationsDepartmentCounter()
+    {
+        var departmentLocation = Locations.FirstOrDefault(location => location.Department.Id == Id);
+
+        if (departmentLocation.Location.LocationHasOneDepartment())
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public bool PositionsDepartmentCounter()
+    {
+        var departmentPosition = Positions.FirstOrDefault(location => location.Department.Id == Id);
+
+        if (departmentPosition.Position.PositionHasOneDepartment())
+        {
+            return true;
+        }
+        return false;
+    }
 }

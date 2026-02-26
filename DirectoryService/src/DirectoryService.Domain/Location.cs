@@ -47,5 +47,13 @@ public record Location
         return IsActive = false;
     }
 
+    public bool LocationHasOneDepartment()
+    {
+        if (Departments.Count == 1)
+            return true;
+        
+        return false;
+    }
+
 }
 

@@ -59,4 +59,12 @@ public record Position
         DeletedAt = DateTime.UtcNow;
         return IsActive = false;
     }
+    
+    public bool PositionHasOneDepartment()
+    {
+        if (Departments.Count() == 1)
+            return true;
+        
+        return false;
+    }
 }

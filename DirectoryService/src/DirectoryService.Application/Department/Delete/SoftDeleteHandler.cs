@@ -32,10 +32,12 @@ public class SoftDeleteHandler
         
         var department = departmentResult.Value;
         
-        if (department.Locations.Count == 1)
+        if (department.LocationsDepartmentCounter())
+        {
             department.Locations.First(l => l.Location.SoftDelete());
+        }
     
-        if (department.Positions.Count == 1)
+        if (department.PositionsDepartmentCounter())
             department.Positions.First(p => p.Position.SoftDelete());
 
         var oldPath = department.Path;
