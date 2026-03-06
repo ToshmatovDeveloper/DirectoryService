@@ -105,27 +105,18 @@ public class DepartmentRepository : IDepartmentRepository
         return UnitResult.Success<Error>();
     }
 
-    public async Task<Result<Department, Error>> SoftDeleteAsync(Guid departmentId, CancellationToken cancellationToken)
+    public async Task<Result<Department, Error>> GetWithChildrenAsync(Guid departmentId, CancellationToken cancellationToken)
     {
-        try
-        {
-            var department = await _dbContext.Departments
-                .Where(d => d.Id == departmentId || d.IsActive == true)
-                .FirstOrDefaultAsync(cancellationToken);
-            
-            if (department == null)
-                return Error.NotFound();
+        var department = await _dbContext.Departments
+            .Include(d => d.Children)
+            .FirstOrDefaultAsync(d => d.Id == departmentId, cancellationToken);
 
-            department.SoftDelete();
-            
-            return department;
-        }
-        catch (Exception e)
-        {
-            return Result.Failure<Department, Error>(
-                GeneralErrors.NotFound());
-        }
+        if (department is null)
+            return Result.Failure<Department, Error>(GeneralErrors.NotFound());
+
+        return department;
     }
+
 
     public async Task Save()
     {

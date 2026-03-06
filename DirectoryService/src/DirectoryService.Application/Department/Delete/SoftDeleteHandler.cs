@@ -22,7 +22,7 @@ public class SoftDeleteHandler
         
         using var transaction = transactionResult.Value;
 
-        var departmentResult = await _departmentRepository.SoftDeleteAsync(id, cancellationToken);
+        var departmentResult = await _departmentRepository.GetWithChildrenAsync(id, cancellationToken);
 
         if (departmentResult.IsFailure)
         {
@@ -32,13 +32,15 @@ public class SoftDeleteHandler
         
         var department = departmentResult.Value;
         
+        department.SoftDelete();
+        
         if (department.LocationsDepartmentCounter())
         {
-            department.Locations.First(l => l.Location.SoftDelete());
+            department.Locations.FirstOrDefault(l => l.Location.SoftDelete());
         }
     
         if (department.PositionsDepartmentCounter())
-            department.Positions.First(p => p.Position.SoftDelete());
+            department.Positions.FirstOrDefault(p => p.Position.SoftDelete());
 
         var oldPath = department.Path;
         
