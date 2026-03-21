@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using Dapper;
 using DirectoryService.Application;
 using DirectoryService.Application.Location;
 using DirectoryService.Application.Locations;
@@ -95,6 +96,50 @@ public class LocationRepository : ILocationRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(l => l.Id == locationId, cancellationToken);
         
+    }
+
+    public async Task<UnitResult<Error>> SoftDeleteUniqDepRelatedLocations(Guid departmentId, CancellationToken cancellationToken = default)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@department_id", departmentId);
+        parameters.Add("@deleted_at", DateTime.UtcNow);
+        parameters.Add("@updated_at", DateTime.UtcNow);
+
+        try
+        {
+            const string sql =
+                """
+                    WITH unique_locations AS (
+                    SELECT dl1.location_id
+                    FROM department_locations dl1
+                    WHERE dl1.department_id = @department_id
+                      AND NOT EXISTS (
+                        SELECT 1
+                        FROM department_locations dl2
+                        WHERE dl2.location_id = dl1.location_id
+                          AND dl2.department_id != @department_id
+                    )
+                )
+                UPDATE locations l
+                SET is_deleted = true,
+                    deleted_at = @deleted_at,
+                    updated_at = @updated_at
+                FROM unique_locations 
+                WHERE l.id = unique_locations.location_id AND l.is_deleted = false;
+                """;
+
+            var connection = _dbContext.Database.GetDbConnection();
+            var updatedLocations = await connection.ExecuteAsync(sql, parameters);
+
+            _logger.LogInformation("Count of updated locations: {updatedLocations}", updatedLocations);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Update error for locations of department{departmentId}", departmentId);
+            return Error.Failure(new ErrorMessage("", "", ""));
+        }
+
+        return UnitResult.Success<Error>();
     }
 }
 
