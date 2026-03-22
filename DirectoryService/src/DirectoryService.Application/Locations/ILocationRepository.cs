@@ -12,4 +12,7 @@ public interface ILocationRepository
         IEnumerable<LocationId> locationIds, CancellationToken cancellationToken);
 
     Task<Domain.Location> GetById(Guid locationId, CancellationToken cancellationToken);
+    
+    Task<UnitResult<Error>> SoftDeleteUniqDepRelatedLocations(Guid departmentId,
+        CancellationToken cancellationToken = default);
 }

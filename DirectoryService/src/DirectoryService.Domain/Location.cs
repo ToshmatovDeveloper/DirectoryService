@@ -35,9 +35,25 @@ public record Location
     public DateTime CreatedAt { get; private set; }
     
     public DateTime UpdatedAt { get; private set; }
+    public DateTime DeletedAt { get; private set; }
     
     public List<Department> DepartmentId { get; private set; } 
     
     public List<DepartmentLocation> Departments { get; private set; }
+    
+    public bool SoftDelete()
+    {
+        DeletedAt = DateTime.UtcNow;
+        return IsActive = false;
+    }
+
+    public bool LocationHasOneDepartment()
+    {
+        if (Departments.Count == 1)
+            return true;
+        
+        return false;
+    }
 
 }
+

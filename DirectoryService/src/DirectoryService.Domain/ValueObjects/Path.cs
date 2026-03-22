@@ -73,4 +73,30 @@ public record Path
         return newPath;
     }
     
+    public Path UpdatePath(Path path)
+    {
+        return new Path(path.Value + "." + "deleted");
+    }
+    
+    public void RecalculatePath(Department department, string newParentPath, List<Department> allDepartments)
+    {
+        var oldPath = department.Path;
+
+        var newPath = $"{newParentPath}.{department.Id}";
+        department.ChangePath(new Path(newPath));
+        
+        
+        var descendants = allDepartments
+            .Where(d => d.Path.Value.StartsWith(oldPath + "."))
+            .ToList();
+        
+        foreach (var descendant in descendants)
+        {
+            var suffix = descendant.Path.Value.Substring(oldPath.Value.Length);
+
+            descendant.ChangePath(new Path(newPath + suffix));
+        }
+    }
+    
+    
 }

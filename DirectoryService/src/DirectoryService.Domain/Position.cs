@@ -35,6 +35,8 @@ public record Position
     
     public DateTime UpdatedAt { get; private set; }
     
+    public DateTime DeletedAt { get; private set; }
+    
     public IEnumerable<DepartmentPosition> Departments { get; private set; }
 
     public static Result<Position, Error> Create(
@@ -50,5 +52,19 @@ public record Position
              name,
              description,
              positionDepartmentsList);
+    }
+    
+    public bool SoftDelete()
+    {
+        DeletedAt = DateTime.UtcNow;
+        return IsActive = false;
+    }
+    
+    public bool PositionHasOneDepartment()
+    {
+        if (Departments.Count() == 1)
+            return true;
+        
+        return false;
     }
 }

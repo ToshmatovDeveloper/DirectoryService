@@ -22,4 +22,17 @@ public interface IDepartmentRepository
         Domain.Department department,
         Path oldPath,
         CancellationToken cancellationToken);
+    
+    Task<UnitResult<Error>> LockChildrenByPath(string oldPath, CancellationToken cancellationToken);
+    
+    Task<UnitResult<Error>> MarkDepartmentAsDeleted(
+        string prefix,
+        Guid deletedDepartmentId,
+        CancellationToken cancellationToken);
+    
+    Task<UnitResult<Error>> UpdateAllDescendantsPath(
+        string oldPath,
+        string newPath,
+        Guid parentDepartmentId,
+        CancellationToken cancellationToken);
 }
